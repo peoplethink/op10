@@ -854,7 +854,7 @@ static void parse_autofocus(CameraState *s, uint8_t *d) {
 
 static std::optional<float> get_accel_z(SubMaster *sm) {
   sm->update(0);
-  if(sm->updated("sensorEvents")){
+  if(sm->updated("sensorEvents")) {
     for (auto event : (*sm)["sensorEvents"].getSensorEvents()) {
       if (event.which() == cereal::SensorEventData::ACCELERATION) {
         if (auto v = event.getAcceleration().getV(); v.size() >= 3)
@@ -1113,7 +1113,7 @@ void process_road_camera(MultiCameraState *s, CameraState *c, int cnt) {
   if (cnt % 3 == 0) {
     const int x = 290, y = 322, width = 560, height = 314;
     const int skip = 1;
-    camera_autoexposure(c, set_exposure_target(b, x, x + width, skip, y, y + height, skip));
+    camera_autoexposure(c, set_exposure_target(b, x, x + width, skip, y, y + height, skip, -1, false, false));
   }
 }
 
