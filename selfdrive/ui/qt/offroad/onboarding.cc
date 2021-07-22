@@ -39,7 +39,7 @@ void TrainingGuide::paintEvent(QPaintEvent *event) {
   QRect rect(image.rect());
   rect.moveCenter(bg.center());
   painter.drawImage(rect.topLeft(), image);
-
+  
   // progress bar
   if (currentIndex > 0 && currentIndex < (boundingRect.size() - 2)) {
     const int h = 20;

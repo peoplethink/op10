@@ -11,12 +11,14 @@ static void ui_draw_extras_limit_speed(UIState *s)
     int limit_speed = scc_smoother.getRoadLimitSpeed();
     int left_dist = scc_smoother.getRoadLimitSpeedLeftDist();
 
+    //activeNDA = 1; //NDA 
+    
     if(activeNDA > 0)
     {
-        int w = 120;
-        int h = 54;
-        int x = (s->viz_rect.w + (bdr_s*2))/2 - w/2;
-        int y = 40;
+        int w = 140 + 45;
+        int h = 60;
+        int x = (s->viz_rect.x + (bdr_s*2)) + 100 - 10 - w/2;
+        int y = 247;
 
         const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
         ui_draw_image(s, {x, y, w, h}, img, 1.f);
@@ -24,32 +26,36 @@ static void ui_draw_extras_limit_speed(UIState *s)
 
     if(limit_speed > 10 && left_dist > 0)
     {
-        int w = 200;
-        int h = 200;
-        int x = (s->viz_rect.x + (bdr_s*2)) + 300;
-        int y = 80;
+        int w = 160;
+        int h = 160;
+        int x = (s->viz_rect.x + (bdr_s*2)) + 1690;
+        //int y = 42;
+        //int x = s->viz_rect.right() - bdr_s * 2;
+        int y = s->viz_rect.y + (bdr_s * 1.5) + 260;
         char str[32];
 
         nvgBeginPath(s->vg);
         nvgRoundedRect(s->vg, x, y, w, h, 210);
-        nvgStrokeColor(s->vg, nvgRGBA(255, 0, 0, 200));
-        nvgStrokeWidth(s->vg, 30);
+        nvgStrokeColor(s->vg, nvgRGBA(255, 0, 0, 200)); //red
+        nvgStrokeWidth(s->vg, 33);
         nvgStroke(s->vg);
 
-        NVGcolor fillColor = nvgRGBA(0, 0, 0, 50);
+        NVGcolor fillColor = nvgRGBA(255, 255, 255, 200);//white
         nvgFillColor(s->vg, fillColor);
         nvgFill(s->vg);
 
-        nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 250));
+        nvgFillColor(s->vg, nvgRGBA(0, 0, 0, 250));//black
 
-        nvgFontSize(s->vg, 140);
+        nvgFontSize(s->vg, 120);
         nvgFontFace(s->vg, "sans-bold");
         nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 
         snprintf(str, sizeof(str), "%d", limit_speed);
         nvgText(s->vg, x+w/2, y+h/2, str, NULL);
 
-        nvgFontSize(s->vg, 120);
+        nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 250));//white
+        
+        nvgFontSize(s->vg, 90);
 
         if(left_dist >= 1000)
             snprintf(str, sizeof(str), "%.1fkm", left_dist / 1000.f);

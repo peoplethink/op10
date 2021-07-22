@@ -112,11 +112,11 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   reset_layout->setSpacing(30);
 
   // reset calibration button
-  QPushButton *reset_calib_btn = new QPushButton("Reset Calibration and LiveParameters");
-  reset_calib_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  QPushButton *reset_calib_btn = new QPushButton("캘리브레이션 및 파라미터 초기화");
+  reset_calib_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #00bfff;");
   reset_layout->addWidget(reset_calib_btn);
   QObject::connect(reset_calib_btn, &QPushButton::released, [=]() {
-    if (ConfirmationDialog::confirm("Are you sure you want to reset calibration and live params?", this)) {
+    if (ConfirmationDialog::confirm("캘리브레이션 및 파라미터를 초기화 할까요?", this)) {
       Params().remove("CalibrationParams");
       Params().remove("LiveParameters");
       QTimer::singleShot(1000, []() {
@@ -193,20 +193,20 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QHBoxLayout *power_layout = new QHBoxLayout();
   power_layout->setSpacing(30);
 
-  QPushButton *reboot_btn = new QPushButton("Reboot");
-  reboot_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #393939;");
+  QPushButton *reboot_btn = new QPushButton("재부팅");
+  reboot_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #2CE22C;");
   power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::clicked, [=]() {
-    if (ConfirmationDialog::confirm("Are you sure you want to reboot?", this)) {
+    if (ConfirmationDialog::confirm("재부팅 할까요?", this)) {
       Hardware::reboot();
     }
   });
 
-  QPushButton *poweroff_btn = new QPushButton("Power Off");
+  QPushButton *poweroff_btn = new QPushButton("종료");
   poweroff_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #E22C2C;");
   power_layout->addWidget(poweroff_btn);
   QObject::connect(poweroff_btn, &QPushButton::clicked, [=]() {
-    if (ConfirmationDialog::confirm("Are you sure you want to power off?", this)) {
+    if (ConfirmationDialog::confirm("종료 할까요?", this)) {
       Hardware::poweroff();
     }
   });
@@ -476,11 +476,11 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   QObject::connect(device, &DevicePanel::showDriverView, this, &SettingsWindow::showDriverView);
 
   QList<QPair<QString, QWidget *>> panels = {
-    {"Device", device},
-    {"Network", network_panel(this)},
-    {"Toggles", new TogglesPanel(this)},
-    {"Software", new SoftwarePanel(this)},
-    {"Community", community_panel()},
+    {"장치", device},
+    {"네트워크", network_panel(this)},
+    {"토글메뉴", new TogglesPanel(this)},
+    {"소프트웨어", new SoftwarePanel(this)},
+    {"커뮤니티", community_panel()},
   };
 
 #ifdef ENABLE_MAPS

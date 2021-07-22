@@ -75,7 +75,7 @@ void Sidebar::updateState(const UIState &s) {
   setProperty("tempStatus", tempStatus);
   setProperty("tempVal", (int)deviceState.getAmbientTempC());
 
-  QString pandaStr = "VEHICLE\nONLINE";
+  QString pandaStr = "GENESIS\nONLINE";
   QColor pandaStatus = good_color;
   if (s.scene.pandaType == cereal::PandaState::PandaType::UNKNOWN) {
     pandaStatus = danger_color;
@@ -109,7 +109,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   }
 
   configFont(p, "Open Sans", 30, "Regular");
-  p.setPen(QColor(0xff, 0xff, 0xff));
+  p.setPen(QColor(0x00, 0xff, 0x00));
 
   const QRect r = QRect(0, 247, event->rect().width(), 50);
 
@@ -120,7 +120,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
 
   // metrics
   configFont(p, "Open Sans", 35, "Regular");
-  drawMetric(p, "TEMP", QString("%1°C").arg(temp_val), temp_status, 338);
+  drawMetric(p, "시스템 온도", QString("%1°C").arg(temp_val), temp_status, 338);
   drawMetric(p, panda_str, "", panda_status, 518);
   drawMetric(p, "CONNECT\n" + connect_str, "", connect_status, 676);
 }
