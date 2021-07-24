@@ -100,8 +100,8 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
   }
 
   float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
-  x = std::clamp(x, 0.f, s->fb_w - sz / 2);
-  y = std::fmin(s->fb_h - sz * .6, y);
+  x = std::clamp(x, 0.f, s->viz_rect.right() - sz / 2);
+  y = std::fmin(s->viz_rect.bottom() - sz * .6, y);
 
   NVGcolor color = COLOR_YELLOW;
   if(lead_data.getRadar())
@@ -183,7 +183,7 @@ static void ui_draw_line(UIState *s, const line_vertices_data &vd, NVGcolor *col
   nvgFill(s->vg);
 }
 
-static void draw_vision_frame(UIState *s) {
+static void draw_frame(UIState *s) {
   glBindVertexArray(s->frame_vao);
   mat4 *out_mat = &s->rear_frame_mat;
   glActiveTexture(GL_TEXTURE0);
@@ -235,7 +235,8 @@ static void ui_draw_vision_lane_lines(UIState *s) {
 
 // Draw all world space objects.
 static void ui_draw_world(UIState *s) {
-  nvgScissor(s->vg, 0, 0, s->fb_w, s->fb_h);
+  // Don't draw on top of sidebar
+  nvgScissor(s->vg, s->viz_rect.x, s->viz_rect.y, s->viz_rect.w, s->viz_rect.h);
 
   // Draw lane edges and vision/mpc tracks
   ui_draw_vision_lane_lines(s);
@@ -887,7 +888,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
   bool is_cruise_set = (cruiseRealMaxSpeed > 0 && cruiseRealMaxSpeed < 255);
 
-  const Rect rect = {bdr_s * 2, int(bdr_s * 1.5), 184, 202};
+  const Rect rect = {s->viz_rect.x + (bdr_s * 2), int(s->viz_rect.y + (bdr_s * 1.5) + 10), 184, 202};
   ui_fill_rect(s->vg, rect, COLOR_BLACK_ALPHA(100), 30.);
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
@@ -939,8 +940,8 @@ static void ui_draw_vision_speed(UIState *s) {
   else if( s->scene.brakeLights ) val_color = nvgRGBA(201, 34, 49, 100);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
 
-  ui_draw_text(s, s->fb_w/2, 240, speed_str.c_str(), 100 * 2.5, val_color, "sans-bold");
-  //ui_draw_text(s, s->fb_w/2, 320, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE_ALPHA(200), "sans-regular");
+  ui_draw_text(s, s->viz_rect.centerX(), 240, speed_str.c_str(), 100 * 2.5, val_color, "sans-bold");
+  //ui_draw_text(s, s->viz_rect.centerX(), 320, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE_ALPHA(200), "sans-regular");
  
   // turning blinker sequential crwusiz / mod by arne-fork Togo
   const int viz_blinker_w = 280;
@@ -984,8 +985,8 @@ static void ui_draw_vision_speed(UIState *s) {
 static void ui_draw_vision_event(UIState *s) {
   const UIScene *scene = &s->scene;
   const int viz_event_w = 220;
-  const int viz_event_x = s->fb_w - (viz_event_w + bdr_s*2);
-  const int viz_event_y = rsdius + (bdr_s*1.5);
+  const int viz_event_x = s->viz_rect.right() - (viz_event_w + bdr_s*2);
+  const int viz_event_y = s->viz_rect.y + (bdr_s*1.5);
   const int viz_event_h = (header_h - (bdr_s*1.5));
   
   // draw steering wheel
@@ -1041,8 +1042,8 @@ static void ui_draw_vision_lane_change_ready(UIState *s) {
 
 static void ui_draw_vision_face(UIState *s) {
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2);
-  const int center_y = s->fb_h - footer_h / 2;
+  const int center_x = s->viz_rect.x + radius + (bdr_s * 2);
+  const int center_y = s->viz_rect.bottom() - footer_h / 2;
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }
 
@@ -1097,9 +1098,13 @@ static void ui_draw_vision_car(UIState *s) { //image designd by" Park byeoung kw
   }
 //bsd
 static void ui_draw_vision_header(UIState *s) {
-  NVGpaint gradient = nvgLinearGradient(s->vg, 0, header_h - (header_h / 2.5), 0, header_h,
-                                        nvgRGBAf(0, 0, 0, 0.45), nvgRGBAf(0, 0, 0, 0));
-  ui_fill_rect(s->vg, {0, 0, s->fb_w , header_h}, gradient);
+  NVGpaint gradient = nvgLinearGradient(s->vg, s->viz_rect.x,
+                        s->viz_rect.y+(header_h-(header_h/2.5)),
+                        s->viz_rect.x, s->viz_rect.y+header_h,
+                        nvgRGBAf(0,0,0,0.45), nvgRGBAf(0,0,0,0));
+
+  ui_fill_rect(s->vg, {s->viz_rect.x, s->viz_rect.y, s->viz_rect.w, header_h}, gradient);
+
   ui_draw_vision_maxspeed(s);
   ui_draw_vision_speed(s);
   ui_draw_vision_event(s);
@@ -1108,6 +1113,16 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_extras(s);
 }
 
+static void ui_draw_vision_frame(UIState *s) {
+  // Draw video frames
+  glEnable(GL_SCISSOR_TEST);
+  glViewport(s->video_rect.x, s->video_rect.y, s->video_rect.w, s->video_rect.h);
+  glScissor(s->viz_rect.x, s->viz_rect.y, s->viz_rect.w, s->viz_rect.h);
+  draw_frame(s);
+  glDisable(GL_SCISSOR_TEST);
+
+  glViewport(0, 0, s->fb_w, s->fb_h);
+}
 
 static void ui_draw_vision(UIState *s) {
   const UIScene *scene = &s->scene;
@@ -1122,23 +1137,35 @@ static void ui_draw_vision(UIState *s) {
 	ui_draw_vision_scc_gap(s);
 //    ui_draw_vision_brake(s);
     //ui_draw_vision_autohold(s);
-  }
+}
+
+static void ui_draw_background(UIState *s) {
+  const QColor &color = bg_colors[s->status];
+  glClearColor(color.redF(), color.greenF(), color.blueF(), 1.0);
+  glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void ui_draw(UIState *s, int w, int h) {
+  s->viz_rect = Rect{bdr_s, bdr_s, w - 2 * bdr_s, h - 2 * bdr_s};
+
   const bool draw_vision = s->scene.started && s->vipc_client->connected;
 
-  glViewport(0, 0, s->fb_w, s->fb_h);
+  // GL drawing functions
+  ui_draw_background(s);
   if (draw_vision) {
-    draw_vision_frame(s);
+    ui_draw_vision_frame(s);
   }
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glViewport(0, 0, s->fb_w, s->fb_h);
+
   // NVG drawing functions - should be no GL inside NVG frame
   nvgBeginFrame(s->vg, s->fb_w, s->fb_h, 1.0f);
+
   if (draw_vision) {
     ui_draw_vision(s);
   }
+
   nvgEndFrame(s->vg);
   glDisable(GL_BLEND);
 }
@@ -1306,12 +1333,13 @@ void ui_resize(UIState *s, int width, int height) {
     zoom *= 0.5;
   }
 
-  float zx = zoom * 2 * intrinsic_matrix.v[2] / width;
-  float zy = zoom * 2 * intrinsic_matrix.v[5] / height;
+  s->video_rect = Rect{bdr_s, bdr_s, s->fb_w - 2 * bdr_s, s->fb_h - 2 * bdr_s};
+  float zx = zoom * 2 * intrinsic_matrix.v[2] / s->video_rect.w;
+  float zy = zoom * 2 * intrinsic_matrix.v[5] / s->video_rect.h;
 
   const mat4 frame_transform = {{
     zx, 0.0, 0.0, 0.0,
-    0.0, zy, 0.0, -y_offset / height * 2,
+    0.0, zy, 0.0, -y_offset / s->video_rect.h * 2,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0,
   }};
@@ -1320,9 +1348,11 @@ void ui_resize(UIState *s, int width, int height) {
 
   // Apply transformation such that video pixel coordinates match video
   // 1) Put (0, 0) in the middle of the video
-  nvgTranslate(s->vg, width / 2, height / 2 + y_offset);
+  nvgTranslate(s->vg, s->video_rect.x + s->video_rect.w / 2, s->video_rect.y + s->video_rect.h / 2 + y_offset);
+
   // 2) Apply same scaling as video
   nvgScale(s->vg, zoom, zoom);
+
   // 3) Put (0, 0) in top left corner of video
   nvgTranslate(s->vg, -intrinsic_matrix.v[2], -intrinsic_matrix.v[5]);
 

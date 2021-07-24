@@ -81,7 +81,6 @@
 #define COLOR_ORANGERED_ALPHA(x) nvgRGBA(255, 069, 000, x)
 
 typedef cereal::CarControl::HUDControl::AudibleAlert AudibleAlert;
-
 // TODO: this is also hardcoded in common/transformations/camera.py
 // TODO: choose based on frame input size
 const float y_offset = Hardware::TICI() ? 150.0 : 0.0;
@@ -225,6 +224,7 @@ typedef struct UIState {
 
   bool awake;
 
+  Rect video_rect, viz_rect;
   float car_space_transform[6];
   bool wide_camera;
 
