@@ -210,11 +210,10 @@ def cancelUpload(upload_id):
 
 
 @dispatcher.add_method
-def primeActivated(activated):
+def primeActivated(active):
   dongle_id = Params().get("DongleId", encoding='utf-8')
   api = Api(dongle_id)
   manage_tokens(api)
-  return {"success": 1}
 
 
 def startLocalProxy(global_end_event, remote_ws_uri, local_port):
