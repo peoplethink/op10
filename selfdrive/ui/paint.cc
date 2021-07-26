@@ -922,7 +922,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 }
 
 static void ui_draw_vision_speed(UIState *s) {
-  const Rect &viz_rect = s->viz_rect;
+  //const Rect &viz_rect = s->viz_rect;
   const UIScene *scene = &s->scene;
   const int viz_speed_w = 260;
   const int viz_speed_x = fb_w/2 - viz_speed_w/2;
@@ -942,7 +942,7 @@ static void ui_draw_vision_speed(UIState *s) {
  
   // turning blinker sequential crwusiz / mod by arne-fork Togo
   const int viz_blinker_w = 280;
-  const int viz_blinker_x = s->viz_rect.centerX() - 140;
+  const int viz_blinker_x = s->fb_w/2 - 140;
   const int viz_add = 50;
 
   if(s->scene.leftBlinker || s->scene.rightBlinker) {
@@ -960,18 +960,18 @@ static void ui_draw_vision_speed(UIState *s) {
 
   if(scene->leftBlinker) {
     nvgBeginPath(s->vg);
-      nvgMoveTo(s->vg, viz_blinker_x - (viz_add*offset)                    , s->viz_rect.y + (header_h/4.2));
-      nvgLineTo(s->vg, viz_blinker_x - (viz_add*offset) - (viz_blinker_w/2), s->viz_rect.y + (header_h/2.1));
-      nvgLineTo(s->vg, viz_blinker_x - (viz_add*offset)                    , s->viz_rect.y + (header_h/1.4));
+      nvgMoveTo(s->vg, viz_blinker_x - (viz_add*offset)                    , header_h/4.2);
+      nvgLineTo(s->vg, viz_blinker_x - (viz_add*offset) - (viz_blinker_w/2), header_h/2.1);
+      nvgLineTo(s->vg, viz_blinker_x - (viz_add*offset)                    , header_h/1.4);
       nvgClosePath(s->vg);
       nvgFillColor(s->vg, COLOR_YELLOW_ALPHA(180 * alpha));
       nvgFill(s->vg);
     }
   if(scene->rightBlinker) {
     nvgBeginPath(s->vg);
-      nvgMoveTo(s->vg, viz_blinker_x + (viz_add*offset) + viz_blinker_w      , s->viz_rect.y + (header_h/4.2));
-      nvgLineTo(s->vg, viz_blinker_x + (viz_add*offset) + (viz_blinker_w*1.5), s->viz_rect.y + (header_h/2.1));
-      nvgLineTo(s->vg, viz_blinker_x + (viz_add*offset) + viz_blinker_w      , s->viz_rect.y + (header_h/1.4));
+      nvgMoveTo(s->vg, viz_blinker_x + (viz_add*offset) + viz_blinker_w      , header_h/4.2);
+      nvgLineTo(s->vg, viz_blinker_x + (viz_add*offset) + (viz_blinker_w*1.5), header_h/2.1);
+      nvgLineTo(s->vg, viz_blinker_x + (viz_add*offset) + viz_blinker_w      , header_h/1.4);
       nvgClosePath(s->vg);
       nvgFillColor(s->vg, COLOR_YELLOW_ALPHA(180 * alpha));
       nvgFill(s->vg);
