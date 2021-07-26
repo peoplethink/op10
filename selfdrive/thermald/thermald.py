@@ -142,7 +142,7 @@ def thermald_thread():
   count = 0
 
   startup_conditions = {
-    "ignition": True,
+    "ignition": False,
   }
   startup_conditions_prev = startup_conditions.copy()
 
