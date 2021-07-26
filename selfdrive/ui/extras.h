@@ -11,8 +11,6 @@ static void ui_draw_extras_limit_speed(UIState *s)
     int limit_speed = scc_smoother.getRoadLimitSpeed();
     int left_dist = scc_smoother.getRoadLimitSpeedLeftDist();
 
-    //activeNDA = 1; //NDA 
-    
     if(activeNDA > 0)
     {
         int w = 140 + 45;
@@ -29,9 +27,9 @@ static void ui_draw_extras_limit_speed(UIState *s)
         int w = 160;
         int h = 160;
         int x = (bdr_s*2) + 1690;
-        //int y = 42;
-        //int x = s->viz_rect.right() - bdr_s * 2;
-        int y = (bdr_s*1.5) + 260;
+        
+		
+        int y = 260;
         char str[32];
 
         nvgBeginPath(s->vg);
