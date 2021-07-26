@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
+#include <QPixmap>
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QTimer>
@@ -120,22 +121,15 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QWidget(parent) {
   main_layout->setMargin(30);
   main_layout->setSpacing(15);
 
-  main_layout->addWidget(new QLabel("Upgrade now"), 1, Qt::AlignTop);
+  vlayout->addWidget(new QLabel("GENESIS"), 1, Qt::AlignCenter);
 
-  QLabel* description = new QLabel("Become a comma prime member at my.comma.ai and get premium features!");
-  description->setStyleSheet(R"(
-    font-size: 50px;
-    color: #b8b8b8;
-  )");
-  description->setWordWrap(true);
-  main_layout->addWidget(description, 2, Qt::AlignTop);
+  QPixmap hkgpix("../assets/offroad/hkg.png");
+  QLabel *hkg = new QLabel();
+  hkg->setPixmap(hkgpix.scaledToWidth(430, Qt::SmoothTransformation));
+  hkg->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+  vlayout->addWidget(hkg, 0, Qt::AlignCenter);
 
-  QVector<QString> features = {"✓ REMOTE ACCESS", "✓ 14 DAYS OF STORAGE", "✓ DEVELOPER PERKS"};
-  for (auto &f: features) {
-    QLabel* feature = new QLabel(f);
-    feature->setStyleSheet(R"(font-size: 40px;)");
-    main_layout->addWidget(feature, 0, Qt::AlignBottom);
-  }
+  setLayout(vlayout);
 }
 
 
@@ -158,7 +152,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addWidget(registrationDescription);
 
-  QPushButton* finishButton = new QPushButton("GENESIS");
+  QPushButton* finishButton = new QPushButton("Finish setup");
   finishButton->setFixedHeight(200);
   finishButton->setStyleSheet(R"(
     border-radius: 30px;
@@ -176,7 +170,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   QWidget* q = new QWidget;
   QVBoxLayout* qrLayout = new QVBoxLayout(q);
 
-  qrLayout->addSpacing(30);
+  qrLayout->addSpacing(40);
   QLabel* qrLabel = new QLabel("Scan QR code to pair!");
   qrLabel->setWordWrap(true);
   qrLabel->setAlignment(Qt::AlignHCenter);
@@ -255,7 +249,9 @@ void SetupWidget::replyFinished(const QString &response) {
   bool is_prime = json["prime"].toBool();
 
   if (!is_paired) {
-    mainLayout->setCurrentIndex(showQr);
+   // mainLayout->setCurrentIndex(showQr);
+    showQr = false;
+    mainLayout->setCurrentWidget(primeAd);
   } else if (!is_prime) {
     showQr = false;
     mainLayout->setCurrentWidget(primeAd);
