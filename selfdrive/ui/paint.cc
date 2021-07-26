@@ -937,8 +937,8 @@ static void ui_draw_vision_speed(UIState *s) {
   else if( s->scene.brakeLights ) val_color = nvgRGBA(201, 34, 49, 100);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
 
-  ui_draw_text(s, s->fb_w/2, 240, speed_str.c_str(), 100 * 2.5, val_color, "sans-bold");
-  //ui_draw_text(s, s->fb_w/2, 320, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE_ALPHA(200), "sans-regular");
+  ui_draw_text(s, s->fb_w/2, 210, speed_str.c_str(), 96 * 2.5, val_color, "sans-bold");
+  //ui_draw_text(s, s->fb_w/2, 290, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE_ALPHA(200), "sans-regular");
  
   // turning blinker sequential crwusiz / mod by arne-fork Togo
   const int viz_blinker_w = 280;
@@ -1117,7 +1117,7 @@ static void ui_draw_vision(UIState *s) {
 //bsd
     ui_draw_vision_car(s);
 	ui_draw_vision_scc_gap(s);
-//    ui_draw_vision_brake(s);
+    //ui_draw_vision_brake(s);
     //ui_draw_vision_autohold(s);
 }
 
