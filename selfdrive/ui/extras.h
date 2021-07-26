@@ -17,7 +17,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
     {
         int w = 140 + 45;
         int h = 60;
-        int x = (s->viz_rect.x + (bdr_s*2)) + 100 - 10 - w/2;
+        int x = (s->fb_w + (bdr_s*2)) + 100 - 10 - w/2;
         int y = 247;
 
         const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
@@ -28,10 +28,10 @@ static void ui_draw_extras_limit_speed(UIState *s)
     {
         int w = 160;
         int h = 160;
-        int x = (s->viz_rect.x + (bdr_s*2)) + 1690;
+        int x = (bdr_s*2) + 1690;
         //int y = 42;
         //int x = s->viz_rect.right() - bdr_s * 2;
-        int y = s->viz_rect.y + (bdr_s * 1.5) + 260;
+        int y = (bdr_s*1.5) + 260;
         char str[32];
 
         nvgBeginPath(s->vg);

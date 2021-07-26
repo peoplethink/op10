@@ -459,7 +459,6 @@ int Localizer::locationd_thread() {
       bool sensorsOK = sm.alive("sensorEvents") && sm.valid("sensorEvents");
       bool gpsOK = this->isGpsOK();
 
-
       MessageBuilder msg_builder;
       kj::ArrayPtr<capnp::byte> bytes = this->get_message_bytes(msg_builder, logMonoTime, inputsOK, sensorsOK, gpsOK);
       pm.send("liveLocationKalman", bytes.begin(), bytes.size());
