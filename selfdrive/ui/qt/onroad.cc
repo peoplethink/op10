@@ -53,15 +53,15 @@ void OnroadWindow::updateState(const UIState &s) {
                  cs.getAlertSize(), cs.getAlertSound()}, bgColor);
   } else if ((sm.frame - s.scene.started_frame) > 5 * UI_FREQ) {
     // Handle controls timeout
-    if (sm.rcv_frame("controlsState") < s.scene.started_frame) {
+    //if (sm.rcv_frame("controlsState") < s.scene.started_frame) {
       // car is started, but controlsState hasn't been seen at all
-      alerts->updateAlert(CONTROLS_WAITING_ALERT, bgColor);
-    } else if ((nanos_since_boot() - sm.rcv_time("controlsState")) / 1e9 > CONTROLS_TIMEOUT) {
+      //alerts->updateAlert(CONTROLS_WAITING_ALERT, bgColor);
+    //} else if ((nanos_since_boot() - sm.rcv_time("controlsState")) / 1e9 > CONTROLS_TIMEOUT) {
       // car is started, but controls is lagging or died
-      bgColor = bg_colors[STATUS_ALERT];
-      alerts->updateAlert(CONTROLS_UNRESPONSIVE_ALERT, bgColor);
-    }
-  }
+      //bgColor = bg_colors[STATUS_ALERT];
+      //alerts->updateAlert(CONTROLS_UNRESPONSIVE_ALERT, bgColor);
+   // }
+ // }
   if (bg != bgColor) {
     // repaint border
     bg = bgColor;
