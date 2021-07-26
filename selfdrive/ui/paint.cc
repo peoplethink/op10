@@ -1029,8 +1029,8 @@ static void ui_draw_vision_event(UIState *s) {
 static void ui_draw_vision_lane_change_ready(UIState *s) {
   if ((*s->sm)["controlsState"].getControlsState().getEnabled() && (*s->sm)["carState"].getCarState().getVEgo() >= 16.6666) {
     const int radius = 90;
-    const int center_x = s->viz_rect.right() - radius - bdr_s * 2;
-    const int center_y = s->viz_rect.y + radius  + (bdr_s * 1.5) + 620;
+    const int center_x = s->fb_w - radius - bdr_s * 2;
+    const int center_y = radius  + (bdr_s * 1.5) + 620;
     //const QColor &color = bg_colors[s->status];
     //NVGcolor nvg_color = nvgRGBA(color.red(), color.green(), color.blue(), color.alpha());
     ui_draw_circle_image(s, center_x, center_y, radius, "lane_change_ready", 1.0f);
@@ -1048,8 +1048,8 @@ static void ui_draw_vision_face(UIState *s) {
 static void ui_draw_vision_car(UIState *s) { //image designd by" Park byeoung kwon"
   const UIScene *scene = &s->scene;
   const int car_size = 260;
-  const int car_x_left = (s->viz_rect.centerX() - 460);
-  const int car_x_right = (s->viz_rect.centerX() + 460);
+  const int car_x_left = (s->fb_w/2 - 460);
+  const int car_x_right = (s->fb_w/2 + 460);
   const int car_y = 590;
   const int car_img_size_w = (car_size * 1);
   const int car_img_size_h = (car_size * 1);
