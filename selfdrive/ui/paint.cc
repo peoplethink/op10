@@ -925,7 +925,7 @@ static void ui_draw_vision_speed(UIState *s) {
   //const Rect &viz_rect = s->viz_rect;
   const UIScene *scene = &s->scene;
   const int viz_speed_w = 260;
-  const int viz_speed_x = fb_w/2 - viz_speed_w/2;
+  const int viz_speed_x = s->fb_w/2 - viz_speed_w/2;
   const int header_h2 = 400;
 
   const float speed = std::max(0.0, (*s->sm)["controlsState"].getControlsState().getCluSpeedMs() * (s->scene.is_metric ? 3.6 : 2.2369363));
