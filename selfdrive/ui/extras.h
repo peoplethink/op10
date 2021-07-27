@@ -15,8 +15,8 @@ static void ui_draw_extras_limit_speed(UIState *s)
     {
         int w = 140 + 45;
         int h = 60;
-        int x = (s->fb_w + (bdr_s*2))/2 - w/2 - 880;
-        int y = 242;
+        int x = (s->fb_w + (bdr_s*2))/2 - w/2 - 865;
+        int y = 240;
 
         const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
         ui_draw_image(s, {x, y, w, h}, img, 1.f);
