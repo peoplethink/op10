@@ -67,24 +67,24 @@ class CarInterface(CarInterfaceBase):
     ret.steerMaxV = [1.5]
 
     # longitudinal
-    ret.longitudinalTuning.kpBP = [0, 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kpV = [1.23, 0.97, 0.83, 0.68, 0.57, 0.48, 0.38]
-    ret.longitudinalTuning.kiBP = [0, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kiV = [0.27, 0.02]
-    ret.longitudinalTuning.kfBP = [10.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kfV = [1.15, 0.8]
-    ret.longitudinalTuning.deadzoneBP = [0., 100.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.deadzoneV = [0., 0.015]
+    ret.longitudinalTuning.kpBP = [0., .3, 10., 35.]
+    ret.longitudinalTuning.kpV = [1.8, 1.2, .8, .6]
+    ret.longitudinalTuning.kiBP = [0., .3, 15., 35.]
+    ret.longitudinalTuning.kiV = [0.15, .10, .05, .045]
+    ret.longitudinalTuning.kfBP = [0., 5., 10., 20., 30.]
+    ret.longitudinalTuning.kfV = [1., 1., 1., 1., .95]
+    ret.longitudinalTuning.deadzoneBP = [0., .5]
+    ret.longitudinalTuning.deadzoneV = [0.00, 0.00]
 
-    ret.gasMaxBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 50.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.gasMaxV = [0.65, 0.44, 0.34, 0.25, 0.17, 0.13]
+    ret.gasMaxBP = [0., 1., 1.1, 15., 40.]
+    ret.gasMaxV = [2., 2., 2., 2., 2.]
 
-    ret.brakeMaxBP = [0, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.brakeMaxV = [1.5, 1.3, 0.8]
+    ret.brakeMaxBP = [0., 5., 5.1]
+    ret.brakeMaxV = [3.8, 3.8, 3.8]  # safety limits to stop unintended deceleration
 
     ret.stoppingBrakeRate = 0.2  # brake_travel/s while trying to stop
-    ret.startingBrakeRate = 1.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 1.35
+    ret.startingBrakeRate = 2.0  # brake_travel/s while releasing on restart
+    ret.startAccel = .5
 
     # genesis
     if candidate == CAR.GENESIS:
