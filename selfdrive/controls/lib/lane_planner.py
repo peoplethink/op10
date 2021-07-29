@@ -26,9 +26,9 @@ class LanePlanner:
     self.ll_x = np.zeros((TRAJECTORY_SIZE,))
     self.lll_y = np.zeros((TRAJECTORY_SIZE,))
     self.rll_y = np.zeros((TRAJECTORY_SIZE,))
-    self.lane_width_estimate = 3.7
+    self.lane_width_estimate = 3.5
     self.lane_width_certainty = 1.0
-    self.lane_width = 3.7
+    self.lane_width = 3.5
 
     self.lll_prob = 0.
     self.rll_prob = 0.
@@ -119,6 +119,8 @@ class LanePlanner:
     # neokii
     if ENABLE_INC_LANE_PROB and self.d_prob > 0.65:
       self.d_prob = min(self.d_prob * 1.35, 1.0)
+    elif self.d_prob > 0.30:
+      self.d_prob = min(self.d_prob * 1.6255, 0.93)
 
     lane_path_y = (l_prob * path_from_left_lane + r_prob * path_from_right_lane) / (l_prob + r_prob + 0.0001)
     safe_idxs = np.isfinite(self.ll_t)
