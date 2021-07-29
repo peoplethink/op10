@@ -6,12 +6,12 @@ from selfdrive.modeld.constants import T_IDXS
 
 LongCtrlState = log.ControlsState.LongControlState
 
-STOPPING_EGO_SPEED = 0.5
+STOPPING_EGO_SPEED = 0.2
 STOPPING_TARGET_SPEED_OFFSET = 0.01
-STARTING_TARGET_SPEED = 0.5
-BRAKE_THRESHOLD_TO_PID = 0.2
+STARTING_TARGET_SPEED = 0.01
+BRAKE_THRESHOLD_TO_PID = 1.0
 
-BRAKE_STOPPING_TARGET = 2.0  # apply at least this amount of brake to maintain the vehicle stationary
+BRAKE_STOPPING_TARGET = 1.2  # apply at least this amount of brake to maintain the vehicle stationary
 
 RATE = 100.0
 DEFAULT_LONG_LAG = 0.15
