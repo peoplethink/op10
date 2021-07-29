@@ -21,7 +21,7 @@ class CarInterface(CarInterfaceBase):
 
   @staticmethod
   def compute_gb(accel, speed):
-    return float(accel) / 1.0
+    return float(accel) 
 
   @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), has_relay=False, car_fw=[]):  # pylint: disable=dangerous-default-value
@@ -68,23 +68,23 @@ class CarInterface(CarInterfaceBase):
 
     # longitudinal
     ret.longitudinalTuning.kpBP = [0., .3, 10., 35.]
-    ret.longitudinalTuning.kpV = [1.8, .8, .3, .3]
+    ret.longitudinalTuning.kpV = [1.2, 0.8, .8, .6]
     ret.longitudinalTuning.kiBP = [0., .3, 15., 35.]
     ret.longitudinalTuning.kiV = [0.006, .005, .005, .0045]
     ret.longitudinalTuning.kfBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kfV = [1., 1., 1., .75, .5]
+    ret.longitudinalTuning.kfV = [1., 1., 1., 1., .95]
     ret.longitudinalTuning.deadzoneBP = [0., .5]
     ret.longitudinalTuning.deadzoneV = [0.00, 0.00]
 
     ret.gasMaxBP = [0., 1., 1.1, 15., 40.]
-    ret.gasMaxV = [2., 2., 2., 1.68, 1.3]
+    ret.gasMaxV = [2., 2., 2., 2., 2.]
 
     ret.brakeMaxBP = [0., 5., 5.1]
-    ret.brakeMaxV = [3.5, 3.5, 3.5]  # safety limits to stop unintended deceleration
+    ret.brakeMaxV = [3.8, 3.8, 3.8]  # safety limits to stop unintended deceleration
 
     ret.stoppingBrakeRate = 0.2  # brake_travel/s while trying to stop
     ret.startingBrakeRate = 2.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 1.3
+    ret.startAccel = 0.5
 
     # genesis
     if candidate == CAR.GENESIS:
