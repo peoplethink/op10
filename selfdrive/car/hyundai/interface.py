@@ -77,14 +77,14 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.deadzoneV = [0.00, 0.00]
 
     ret.gasMaxBP = [0., 1., 1.1, 15., 40.]
-    ret.gasMaxV = [2., 2., 1.9, 1.8, 1.8]
+    ret.gasMaxV = [2., 1.9, 1.8, 1.7, 1.7]
 
     ret.brakeMaxBP = [0., 5., 5.1]
     ret.brakeMaxV = [3.8, 3.8, 3.8]  # safety limits to stop unintended deceleration
 
     ret.stoppingBrakeRate = 0.2  # brake_travel/s while trying to stop
-    ret.startingBrakeRate = 1.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 0.5
+    ret.startingBrakeRate = 2.0  # brake_travel/s while releasing on restart
+    ret.startAccel = 1.3
 
     # genesis
     if candidate == CAR.GENESIS:
