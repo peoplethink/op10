@@ -192,11 +192,11 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addStretch();
 
-  QPushButton* finishButton = new QPushButton("D U R A N G O");
+  QPushButton* finishButton = new QPushButton("marine2875/op60");
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
-      font-size: 60px;
+      font-size: 55px;
       font-weight: 400;
       border-radius: 10px;
       background-color: #465BEA;
