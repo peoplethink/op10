@@ -180,7 +180,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setSpacing(0);
 
   QLabel* registrationTitle = new QLabel("G E N E S I S");
-  registrationTitle->setStyleSheet("font-size: 85px; font-weight: bold; margin-left: 85px; margin-top:230px;");
+  registrationTitle->setStyleSheet("font-size: 90px; font-weight: bold; margin-left: 85px; margin-top:230px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
   finishRegistationLayout->addSpacing(30);
@@ -196,7 +196,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
-      font-size: 75px;
+      font-size: 60px;
       font-weight: 400;
       border-radius: 10px;
       background-color: #465BEA;
