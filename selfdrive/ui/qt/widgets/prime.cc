@@ -180,7 +180,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setSpacing(0);
 
   QLabel* registrationTitle = new QLabel("G E N E S I S");
-  registrationTitle->setStyleSheet("font-size: 90px; font-weight: bold; margin-left: 85px; margin-top:230px;");
+  registrationTitle->setStyleSheet("font-size: 90px; font-weight: bold; margin-left: 85px; margin-top:190px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
   finishRegistationLayout->addSpacing(30);
