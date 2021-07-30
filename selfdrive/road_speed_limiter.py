@@ -11,7 +11,7 @@ from common.params import Params
 from common.numpy_fast import interp
 
 
-CAMERA_SPEED_FACTOR = 1.05
+CAMERA_SPEED_FACTOR = 1.03
 
 class Port:
   BROADCAST_PORT = 2899
