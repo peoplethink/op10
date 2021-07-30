@@ -21,6 +21,7 @@ private:
   QVBoxLayout* main_layout;
   QPixmap lock;
   QPixmap checkmark;
+  QPixmap circled_slash;
   QVector<QPixmap> strengths;
 
 signals:
@@ -37,6 +38,7 @@ public:
 
 private:
   LabelControl* ipLabel;
+  ToggleControl* tetheringToggle;
   WifiManager* wifi = nullptr;
 
 signals:

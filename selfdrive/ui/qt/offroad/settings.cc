@@ -193,24 +193,34 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QHBoxLayout *power_layout = new QHBoxLayout();
   power_layout->setSpacing(30);
 
-  QPushButton *reboot_btn = new QPushButton("재부팅");
-  reboot_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #2CE22C;");
+  QPushButton *reboot_btn = new QPushButton("Reboot");
+  reboot_btn->setObjectName("reboot_btn");
   power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::clicked, [=]() {
-    if (ConfirmationDialog::confirm("재부팅 할까요?", this)) {
+    if (ConfirmationDialog::confirm("Are you sure you want to reboot?", this)) {
       Hardware::reboot();
     }
   });
 
-  QPushButton *poweroff_btn = new QPushButton("종료");
-  poweroff_btn->setStyleSheet("height: 120px;border-radius: 15px; background-color: #E22C2C;");
+  QPushButton *poweroff_btn = new QPushButton("Power Off");
+  poweroff_btn->setObjectName("poweroff_btn");
   power_layout->addWidget(poweroff_btn);
   QObject::connect(poweroff_btn, &QPushButton::clicked, [=]() {
-    if (ConfirmationDialog::confirm("종료 할까요?", this)) {
+    if (ConfirmationDialog::confirm("Are you sure you want to power off?", this)) {
       Hardware::poweroff();
     }
   });
 
+  setStyleSheet(R"(
+    QPushButton {
+      height: 120px;
+      border-radius: 15px;
+    }
+    #reboot_btn { background-color: #393939; }
+    #reboot_btn:pressed { background-color: #4a4a4a; }
+    #poweroff_btn { background-color: #E22C2C; }
+    #poweroff_btn:pressed { background-color: #FF2424; }
+  )");
   main_layout->addLayout(power_layout);
 }
 
@@ -388,7 +398,6 @@ QWidget * community_panel() {
                                             "If your car only supports LDWS, turn it on.",
                                             "../assets/offroad/icon_openpilot.png"
                                               ));
-
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new ParamControl("LaneChangeEnabled",
                                             "Enable Lane Change Assist",
@@ -458,13 +467,18 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   // close button
   QPushButton *close_btn = new QPushButton("×");
   close_btn->setStyleSheet(R"(
-    font-size: 140px;
-    padding-bottom: 20px;
-    font-weight: bold;
-    border 1px grey solid;
-    border-radius: 100px;
-    background-color: #292929;
-    font-weight: 400;
+    QPushButton {
+      font-size: 140px;
+      padding-bottom: 20px;
+      font-weight: bold;
+      border 1px grey solid;
+      border-radius: 100px;
+      background-color: #292929;
+      font-weight: 400;
+    }
+    QPushButton:pressed {
+      background-color: #3B3B3B;
+    }
   )");
   close_btn->setFixedSize(200, 200);
   sidebar_layout->addSpacing(45);
@@ -509,6 +523,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
       }
       QPushButton:checked {
         color: white;
+      }
+      QPushButton:pressed {
+        color: #ADADAD;
       }
     )").arg(padding));
 
