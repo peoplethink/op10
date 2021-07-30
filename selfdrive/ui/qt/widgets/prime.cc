@@ -179,8 +179,8 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setContentsMargins(30, 75, 30, 45);
   finishRegistationLayout->setSpacing(0);
 
-  QLabel* registrationTitle = new QLabel("DURANGO");
-  registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold; margin-left: 85px; margin-top:250px;");
+  QLabel* registrationTitle = new QLabel("G E N E S I S");
+  registrationTitle->setStyleSheet("font-size: 85px; font-weight: bold; margin-left: 85px; margin-top:230px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
   finishRegistationLayout->addSpacing(30);
@@ -192,7 +192,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addStretch();
 
-  QPushButton* finishButton = new QPushButton("G E N E S I S");
+  QPushButton* finishButton = new QPushButton("D U R A N G O");
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
