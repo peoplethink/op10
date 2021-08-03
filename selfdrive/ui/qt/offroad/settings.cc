@@ -23,11 +23,7 @@
 #include "selfdrive/ui/qt/widgets/toggle.h"
 #include "selfdrive/ui/ui.h"
 #include "selfdrive/ui/qt/util.h"
-
-#include <QComboBox>
-#include <QAbstractItemView>
-#include <QScroller>
-#include <QListView>
+#include "selfdrive/ui/qt/qt_window.h"
 
 TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
   QVBoxLayout *main_layout = new QVBoxLayout(this);
@@ -68,15 +64,15 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
 
   ParamControl *record_toggle = new ParamControl("RecordFront",
                                                  "Record and Upload Driver Camera",
-                                                "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
-                                                "../assets/offroad/icon_monitoring.png",
-                                                this);
+                                                 "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
+                                                 "../assets/offroad/icon_monitoring.png",
+                                                 this);
   toggles.append(record_toggle);
   toggles.append(new ParamControl("EndToEndToggle",
-                                   "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
-                                   "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
-                                   "../assets/offroad/icon_road.png",
-                                   this));
+                                  "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
+                                  "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
 
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
@@ -100,33 +96,11 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
 DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
   QVBoxLayout *main_layout = new QVBoxLayout(this);
   Params params = Params();
-
-  QString dongle = QString::fromStdString(params.get("DongleId", false));
-  main_layout->addWidget(new LabelControl("Dongle ID", dongle));
+  main_layout->addWidget(new LabelControl("Dongle ID", getDongleId().value_or("N/A")));
   main_layout->addWidget(horizontal_line());
 
   QString serial = QString::fromStdString(params.get("HardwareSerial", false));
   main_layout->addWidget(new LabelControl("Serial", serial));
-
-  QHBoxLayout *reset_layout = new QHBoxLayout();
-  reset_layout->setSpacing(30);
-
-  // reset calibration button
-  QPushButton *reset_calib_btn = new QPushButton("캘리브레이션 및 파라미터 초기화");
-  reset_calib_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #00bfff;");
-  reset_layout->addWidget(reset_calib_btn);
-  QObject::connect(reset_calib_btn, &QPushButton::released, [=]() {
-    if (ConfirmationDialog::confirm("캘리브레이션 및 파라미터를 초기화 할까요?", this)) {
-      Params().remove("CalibrationParams");
-      Params().remove("LiveParameters");
-      QTimer::singleShot(1000, []() {
-        Hardware::reboot();
-      });
-    }
-  });
-
-  main_layout->addWidget(horizontal_line());
-  main_layout->addLayout(reset_layout);
 
   // offroad-only buttons
 
@@ -174,14 +148,16 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
     });
   }
 
-  auto uninstallBtn = new ButtonControl("Uninstall " + getBrand(), "UNINSTALL");
-  connect(uninstallBtn, &ButtonControl::clicked, [=]() {
-    if (ConfirmationDialog::confirm("Are you sure you want to uninstall?", this)) {
-      Params().putBool("DoUninstall", true);
-    }
-  });
+  ButtonControl *regulatoryBtn = nullptr;
+  if (Hardware::TICI()) {
+    regulatoryBtn = new ButtonControl("Regulatory", "VIEW", "");
+    connect(regulatoryBtn, &ButtonControl::clicked, [=]() {
+      const std::string txt = util::read_file(ASSET_PATH.toStdString() + "/offroad/fcc.html");
+      RichTextDialog::alert(QString::fromStdString(txt), this);
+    });
+  }
 
-  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, uninstallBtn}) {
+  for (auto btn : {dcamBtn, resetCalibBtn, retrainingBtn, regulatoryBtn}) {
     if (btn) {
       main_layout->addWidget(horizontal_line());
       connect(parent, SIGNAL(offroadTransition(bool)), btn, SLOT(setEnabled(bool)));
@@ -246,10 +222,17 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : QWidget(parent) {
   QWidget *widgets[] = {versionLbl, lastUpdateLbl, updateBtn, gitBranchLbl, gitCommitLbl, osVersionLbl};
   for (int i = 0; i < std::size(widgets); ++i) {
     main_layout->addWidget(widgets[i]);
-    if (i < std::size(widgets) - 1) {
-      main_layout->addWidget(horizontal_line());
-    }
+    main_layout->addWidget(horizontal_line());
   }
+
+  auto uninstallBtn = new ButtonControl("Uninstall " + getBrand(), "UNINSTALL");
+  connect(uninstallBtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Are you sure you want to uninstall?", this)) {
+      Params().putBool("DoUninstall", true);
+    }
+  });
+  connect(parent, SIGNAL(offroadTransition(bool)), uninstallBtn, SLOT(setEnabled(bool)));
+  main_layout->addWidget(uninstallBtn);
 
   fs_watch = new QFileSystemWatcher(this);
   QObject::connect(fs_watch, &QFileSystemWatcher::fileChanged, [=](const QString path) {
@@ -311,140 +294,6 @@ QWidget * network_panel(QWidget * parent) {
   Networking *w = new Networking(parent);
 #endif
   return w;
-}
-
-QStringList get_list(const char* path)
-{
-  QStringList stringList;
-  QFile textFile(path);
-  if(textFile.open(QIODevice::ReadOnly))
-  {
-      QTextStream textStream(&textFile);
-      while (true)
-      {
-        QString line = textStream.readLine();
-        if (line.isNull())
-            break;
-        else
-            stringList.append(line);
-      }
-  }
-
-  return stringList;
-}
-
-QWidget * community_panel() {
-  QVBoxLayout *toggles_list = new QVBoxLayout();
-  //toggles_list->setMargin(50);
-
-  QComboBox* supported_cars = new QComboBox();
-  supported_cars->setStyleSheet(R"(
-  QComboBox {
-    background-color: #393939;
-    border-radius: 15px;
-    padding-left: 40px
-    height: 140px;
-    }
-)");
-  QListView* list = new QListView(supported_cars);
-  list->setStyleSheet("QListView {padding: 40px; background-color: #393939; border-radius: 15px; height: 140px;} QListView::item{height: 100px}");
-  supported_cars->setView(list);
-
-  QScroller::grabGesture(supported_cars->view()->viewport(),QScroller::LeftMouseButtonGesture);
-  supported_cars->view()->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-
-  supported_cars->setMinimumSize(200, 120);
-
-  supported_cars->addItem("[ Select your car ]");
-  supported_cars->addItems(get_list("/data/params/d/SupportedCars"));
-
-  supported_cars->setCurrentText(QString(Params().get("SelectedCar").c_str()));
-
-  QObject::connect(supported_cars, QOverload<int>::of(&QComboBox::currentIndexChanged),
-    [=](int index){
-
-        if(supported_cars->currentIndex() == 0)
-            Params().remove("SelectedCar");
-        else
-            Params().put("SelectedCar", supported_cars->currentText().toStdString());
-
-    });
-
-  toggles_list->addWidget(supported_cars);
-
-
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("UseClusterSpeed",
-                                            "Use Cluster Speed",
-                                            "Use cluster speed instead of wheel speed.",
-                                            "../assets/offroad/icon_road.png"
-                                              ));
-
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("LongControlEnabled",
-                                            "Enable HKG Long Control",
-                                            "warnings: it is beta, be careful!! Openpilot will control the speed of your car",
-                                            "../assets/offroad/icon_road.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("MadModeEnabled",
-                                            "Enable HKG MAD mode",
-                                            "Openpilot will engage when turn cruise control on",
-                                            "../assets/offroad/icon_openpilot.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("IsLdwsCar",
-                                            "LDWS",
-                                            "If your car only supports LDWS, turn it on.",
-                                            "../assets/offroad/icon_openpilot.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("LaneChangeEnabled",
-                                            "Enable Lane Change Assist",
-                                            "Perform assisted lane changes with openpilot by checking your surroundings for safety, activating the turn signal and gently nudging the steering wheel towards your desired lane. openpilot is not capable of checking if a lane change is safe. You must continuously observe your surroundings to use this feature.",
-                                            "../assets/offroad/icon_road.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("AutoLaneChangeEnabled",
-                                            "Enable Auto Lane Change(Nudgeless)",
-                                            "warnings: it is beta, be careful!!",
-                                            "../assets/offroad/icon_road.png"
-                                              ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("SccSmootherSlowOnCurves",
-                                            "Enable Slow On Curves",
-                                            "",
-                                            "../assets/offroad/icon_road.png"
-                                            ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("SccSmootherSyncGasPressed",
-                                            "Sync set speed on gas pressed",
-                                            "",
-                                            "../assets/offroad/icon_road.png"
-                                            ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("FuseWithStockScc",
-                                            "Use by fusion with stock scc",
-                                            "",
-                                            "../assets/offroad/icon_road.png"
-                                            ));
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("ShowDebugUI",
-                                            "Show Debug UI",
-                                            "",
-                                            "../assets/offroad/icon_shell.png"
-                                            ));
-
-  toggles_list->addWidget(horizontal_line());
-  toggles_list->addWidget(new ParamControl("CustomLeadMark",
-                                            "Use custom lead mark",
-                                            "",
-                                            "../assets/offroad/icon_road.png"
-                                            ));
-
-  QWidget *widget = new QWidget;
-  widget->setLayout(toggles_list);
-  return widget;
 }
 
 void SettingsWindow::showEvent(QShowEvent *event) {
@@ -516,7 +365,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
         color: grey;
         border: none;
         background: none;
-        font-size: 60px;
+        font-size: 65px;
         font-weight: 500;
         padding-top: %1px;
         padding-bottom: %1px;
