@@ -883,7 +883,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   
   EventName.turningIndicatorOn: {
     ET.WARNING: Alert(
-      "저속 조향유지",
+      "조향유지중...",
       "",
       AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .0, .2),
