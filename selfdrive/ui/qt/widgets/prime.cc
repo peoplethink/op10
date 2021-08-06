@@ -192,7 +192,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addStretch();
 
-  QPushButton* finishButton = new QPushButton("marine2875/op60");
+  QPushButton* finishButton = new QPushButton("marine2875/op70");
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
