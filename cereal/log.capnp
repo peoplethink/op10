@@ -951,7 +951,7 @@ struct LiveLocationKalman {
   angularVelocityDevice @8 : Measurement;
 
   # orientationNEDCalibrated transforms to rot matrix: NED_from_calibrated
-  calibratedOrientationNED @9 : Measurement;
+  orientationNEDCalibrated @9 : Measurement;
 
   # Calibrated frame is simply device frame
   # aligned with the vehicle
