@@ -317,9 +317,8 @@ QWidget * network_panel(QWidget * parent) {
   layout->addWidget(new SshToggle());
   layout->addWidget(horizontal_line());
   layout->addWidget(new SshControl());
-  
+
   layout->addStretch(1);
-  
 #else
   Networking *w = new Networking(parent);
 #endif
@@ -433,6 +432,12 @@ QWidget * community_panel() {
   toggles_list->addWidget(new ParamControl("SccSmootherSyncGasPressed",
                                             "Sync set speed on gas pressed",
                                             "",
+                                            "../assets/offroad/icon_road.png"
+                                            ));
+  toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("StockNaviDecelEnabled",
+                                            "Stock Navi based deceleration",
+                                            "Use the stock navi based deceleration for longcontrol",
                                             "../assets/offroad/icon_road.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
