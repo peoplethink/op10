@@ -68,23 +68,23 @@ class CarInterface(CarInterfaceBase):
 
     # longitudinal
     ret.longitudinalTuning.kpBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kpV = [1.2, 0.97, 0.82, 0.72, 0.61, 0.52, 0.45]
+    ret.longitudinalTuning.kpV = [1.2, 0.97, 0.82, 0.735, 0.63, 0.54, 0.46]
     ret.longitudinalTuning.kiBP = [0., 130. * CV.KPH_TO_MS]
     ret.longitudinalTuning.kiV = [0.03, 0.02]
     ret.longitudinalTuning.kfBP = [0., 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kfV = [1.0, 0.9]
+    ret.longitudinalTuning.kfV = [1.0, 0.975]
     ret.longitudinalTuning.deadzoneBP = [0., 100.*CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
 
     ret.gasMaxBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 50.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.gasMaxV = [0.57, 0.4, 0.32, 0.24, 0.17, 0.13]
+    ret.gasMaxV = [0.58, 0.4, 0.32, 0.24, 0.17, 0.13]
 
     ret.brakeMaxBP = [0, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
     ret.brakeMaxV = [1.5, 1.0, 0.7]
 
     ret.stoppingBrakeRate = 0.15  # brake_travel/s while trying to stop
     ret.startingBrakeRate = 1.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 1.55
+    ret.startAccel = 1.5
 
     # genesis
     if candidate == CAR.GENESIS:
@@ -116,7 +116,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1694 + STD_CARGO_KG
       ret.wheelbase = 2.766
       ret.centerToFront = ret.wheelbase * 0.4
-    elif candidate in [CAR.SONATA, CAR.SONATA_HEV]:
+    elif candidate in [CAR.SONATA, CAR.SONATA_HEV, CAR.SONATA21_HEV]:
       ret.mass = 1513. + STD_CARGO_KG
       ret.wheelbase = 2.84
       ret.centerToFront = ret.wheelbase * 0.4
@@ -222,7 +222,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.78
       tire_stiffness_factor = 0.7
       ret.centerToFront = ret.wheelbase * 0.4
-    elif candidate in [CAR.NIRO_HEV, CAR.NIRO_EV]:
+    elif candidate in [CAR.NIRO_EV, CAR.NIRO_HEV, CAR.NIRO21_HEV]:
       ret.mass = 1737. + STD_CARGO_KG
       ret.wheelbase = 2.7
       tire_stiffness_factor = 0.7

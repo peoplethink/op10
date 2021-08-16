@@ -237,6 +237,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"SccSmootherSyncGasPressed", PERSISTENT},
     {"ShowDebugUI", PERSISTENT},
     {"CustomLeadMark", PERSISTENT},
+    {"IsOpenpilotViewEnabled", CLEAR_ON_MANAGER_START},
 };
 
 } // namespace

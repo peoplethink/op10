@@ -190,6 +190,8 @@ def thermald_thread():
         except Exception:
           pass
     cloudlog.event("CPR", data=cpr_data)
+    
+  is_openpilot_view_enabled = 0 
 
   while 1:
     pandaState = messaging.recv_sock(pandaState_sock, wait=True)
@@ -231,6 +233,13 @@ def thermald_thread():
           pandaState_prev.pandaState.pandaType != log.PandaState.PandaType.unknown:
           params.clear_all(ParamKeyType.CLEAR_ON_PANDA_DISCONNECT)
       pandaState_prev = pandaState
+      
+    elif params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 0:
+      is_openpilot_view_enabled = 1
+      startup_conditions["ignition"] = True
+    elif not params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 1:
+      is_openpilot_view_enabled = 0
+      startup_conditions["ignition"] = False
 
     # get_network_type is an expensive call. update every 10s
     if (count % int(10. / DT_TRML)) == 0:

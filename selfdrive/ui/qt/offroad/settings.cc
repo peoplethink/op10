@@ -126,6 +126,10 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
 
   main_layout->addWidget(horizontal_line());
   main_layout->addLayout(reset_layout);
+  
+  // Openpilot View
+  main_layout->addWidget(horizontal_line());
+  main_layout->addWidget(new OpenpilotView());
 
   // offroad-only buttons
 
@@ -313,8 +317,9 @@ QWidget * network_panel(QWidget * parent) {
   layout->addWidget(new SshToggle());
   layout->addWidget(horizontal_line());
   layout->addWidget(new SshControl());
-
+  
   layout->addStretch(1);
+  
 #else
   Networking *w = new Networking(parent);
 #endif

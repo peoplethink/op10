@@ -82,7 +82,30 @@ static void ui_draw_circle_image(const UIState *s, int center_x, int center_y, i
   ui_draw_circle_image(s, center_x, center_y, radius, image, nvgRGBA(0, 0, 0, (255 * bg_alpha)), img_alpha);
 }
 
-static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &lead_data, const vertex_data &vd) {
+static void draw_lead(UIState *s, const cereal::ModelDataV2::LeadDataV3::Reader &lead_data, const vertex_data &vd) {
+  // Draw lead car indicator
+  auto [x, y] = vd;
+
+  float fillAlpha = 0;
+  float speedBuff = 10.;
+  float leadBuff = 40.;
+  float d_rel = lead_data.getX()[0];
+  float v_rel = lead_data.getV()[0];
+  if (d_rel < leadBuff) {
+    fillAlpha = 255*(1.0-(d_rel/leadBuff));
+    if (v_rel < 0) {
+      fillAlpha += 255*(-1*(v_rel/speedBuff));
+    }
+    fillAlpha = (int)(fmin(fillAlpha, 255));
+  }
+
+  float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
+  x = std::clamp(x, 0.f, s->fb_w - sz / 2);
+  y = std::fmin(s->fb_h - sz * .6, y);
+  draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_YELLOW);
+}
+
+static void draw_lead_radar(UIState *s, const cereal::RadarState::LeadData::Reader &lead_data, const vertex_data &vd) {
   // Draw lead car indicator
   auto [x, y] = vd;
 
@@ -242,22 +265,23 @@ static void ui_draw_world(UIState *s) {
 
   // Draw lead indicators if openpilot is handling longitudinal
   //if (s->scene.longitudinal_control) {
-    auto radar_state = (*s->sm)["radarState"].getRadarState();
-    auto lead_one = radar_state.getLeadOne();
-    auto lead_two = radar_state.getLeadTwo();
-    if (lead_one.getStatus()) {
 
-      if (s->custom_lead_mark)
-        draw_lead_custom(s, lead_one, s->scene.lead_vertices[0]);
-      else
-        draw_lead(s, lead_one, s->scene.lead_vertices[0]);
+    auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
+    auto lead_two = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[1];
+    if (lead_one.getProb() > .5) {
+      draw_lead(s, lead_one, s->scene.lead_vertices[0]);
     }
-    if (lead_two.getStatus() && (std::abs(lead_one.getDRel() - lead_two.getDRel()) > 3.0)) {
+    if (lead_two.getProb() > .5 && (std::abs(lead_one.getX()[0] - lead_two.getX()[0]) > 3.0)) {
+      draw_lead(s, lead_two, s->scene.lead_vertices[1]);
+    }
 
+    auto radar_state = (*s->sm)["radarState"].getRadarState();
+    auto lead_radar = radar_state.getLeadOne();
+    if (lead_radar.getStatus() && lead_radar.getRadar()) {
       if (s->custom_lead_mark)
-        draw_lead_custom(s, lead_two, s->scene.lead_vertices[1]);
+        draw_lead_custom(s, lead_radar, s->scene.lead_vertices_radar[0]);
       else
-        draw_lead(s, lead_two, s->scene.lead_vertices[1]);
+        draw_lead_radar(s, lead_radar, s->scene.lead_vertices_radar[0]);
     }
   //}
 
@@ -1006,7 +1030,7 @@ static void ui_draw_vision_event(UIState *s) {
       nvgBeginPath(s->vg);
       nvgCircle(s->vg, bg_wheel_x, (bg_wheel_y + (bdr_s*1.5)), bg_wheel_size);
       if (is_engaged) {
-        nvgFillColor(s->vg, nvgRGBA(0x00, 0xff, 0x00, 0x90));
+        nvgFillColor(s->vg, nvgRGBA(0x5f, 0x9e, 0xa0, 0x90));
       } else if (is_warning) {
         nvgFillColor(s->vg, nvgRGBA(0x80, 0x80, 0x80, 0xff));
       } else if (is_engageable) {
@@ -1094,6 +1118,63 @@ static void ui_draw_vision_car(UIState *s) { //image designd by" Park byeoung kw
     }
   }
 //bsd
+
+//tpms
+static void ui_draw_tpms(UIState *s) {
+  int viz_tpms_w = 140;
+  int viz_tpms_h = 138;
+  int viz_tpms_x = s->fb_w - 185;
+  int viz_tpms_y = 690;
+  
+  char tpmsFl[32];
+  char tpmsFr[32];
+  char tpmsRl[32];
+  char tpmsRr[32];
+ 
+  const Rect rect = {viz_tpms_x, viz_tpms_y, viz_tpms_w, viz_tpms_h};
+  ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(80), 5, 20);
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
+  const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
+  const int pos_y = 804;
+  const int pos_add = 50;
+  const int fontsize = 65;
+
+  ui_draw_text(s, pos_x, pos_y+pos_add, "", fontsize-20, COLOR_WHITE_ALPHA(200), "sans-regular");
+  snprintf(tpmsFl, sizeof(tpmsFl), "%.0f", s->scene.tpmsFl);
+  snprintf(tpmsFr, sizeof(tpmsFr), "%.0f", s->scene.tpmsFr);
+  snprintf(tpmsRl, sizeof(tpmsRl), "%.0f", s->scene.tpmsRl);
+  snprintf(tpmsRr, sizeof(tpmsRr), "%.0f", s->scene.tpmsRr);
+
+  if (s->scene.tpmsFl < 30) {
+    ui_draw_text(s, pos_x - pos_add, pos_y-pos_add, tpmsFl, fontsize, nvgRGBA(102, 255, 51, 255), "sans-bold");
+  } else if (s->scene.tpmsFl > 40) {
+    ui_draw_text(s, pos_x - pos_add, pos_y-pos_add, "-", fontsize, nvgRGBA(255, 66, 66, 255), "sans-semibold");
+  } else {
+    ui_draw_text(s, pos_x - pos_add, pos_y-pos_add, tpmsFl, fontsize, nvgRGBA(255, 255, 255, 255), "sans-semibold");
+  }
+  if (s->scene.tpmsFr < 30) {
+    ui_draw_text(s, pos_x + pos_add, pos_y-pos_add, tpmsFr, fontsize, nvgRGBA(102, 255, 51, 255), "sans-bold");
+  } else if (s->scene.tpmsFr > 40) {
+    ui_draw_text(s, pos_x + pos_add, pos_y-pos_add, "-", fontsize, nvgRGBA(255, 66, 66, 255), "sans-semibold");
+  } else {
+    ui_draw_text(s, pos_x + pos_add, pos_y-pos_add, tpmsFr, fontsize, nvgRGBA(255, 255, 255, 255), "sans-semibold");
+  }
+  if (s->scene.tpmsRl < 30) {
+    ui_draw_text(s, pos_x - pos_add, pos_y, tpmsRl, fontsize, nvgRGBA(102, 255, 51, 255), "sans-bold");
+  } else if (s->scene.tpmsRl > 40) {
+    ui_draw_text(s, pos_x - pos_add, pos_y, "-", fontsize, nvgRGBA(255, 66, 66, 255), "sans-semibold");
+  } else {
+    ui_draw_text(s, pos_x - pos_add, pos_y, tpmsRl, fontsize, nvgRGBA(255, 255, 255, 255), "sans-semibold");
+  }
+  if (s->scene.tpmsRr < 30) {
+    ui_draw_text(s, pos_x + pos_add, pos_y, tpmsRr, fontsize, nvgRGBA(102, 255, 51, 255), "sans-bold");
+  } else if (s->scene.tpmsRr > 40) {
+    ui_draw_text(s, pos_x + pos_add, pos_y, "-", fontsize, nvgRGBA(255, 66, 66, 255), "sans-semibold");
+  } else {
+    ui_draw_text(s, pos_x + pos_add, pos_y, tpmsRr, fontsize, nvgRGBA(255, 255, 255, 255), "sans-semibold");
+  }
+}
+
 static void ui_draw_vision_header(UIState *s) {
   NVGpaint gradient = nvgLinearGradient(s->vg, 0, header_h - (header_h / 2.5), 0, header_h,
                                         nvgRGBAf(0, 0, 0, 0.45), nvgRGBAf(0, 0, 0, 0));
@@ -1101,7 +1182,7 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_vision_maxspeed(s);
   ui_draw_vision_speed(s);
   ui_draw_vision_event(s);
-  ui_draw_vision_lane_change_ready(s);
+  //ui_draw_vision_lane_change_ready(s);
   bb_ui_draw_UI(s);
   ui_draw_extras(s);
 }
@@ -1116,7 +1197,8 @@ static void ui_draw_vision(UIState *s) {
   ui_draw_vision_header(s);
 //bsd
     ui_draw_vision_car(s);
-	ui_draw_vision_scc_gap(s);
+    ui_draw_vision_scc_gap(s);
+    ui_draw_tpms(s);
     //ui_draw_vision_brake(s);
     //ui_draw_vision_autohold(s);
 }

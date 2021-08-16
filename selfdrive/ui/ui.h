@@ -133,7 +133,7 @@ typedef enum UIStatus {
 
 const QColor bg_colors [] = {
   [STATUS_DISENGAGED] =  QColor(0x0, 0x0, 0x0, 0xff),
-  [STATUS_ENGAGED] = QColor(0x00, 0xff, 0x00, 0x15),
+  [STATUS_ENGAGED] = QColor(0x5f, 0x9e, 0xa0, 0x15),
   [STATUS_WARNING] = QColor(0x80, 0x80, 0x80, 0x0f),
   [STATUS_ALERT] = QColor(0xC9, 0x22, 0x31, 0x65),
 };
@@ -166,6 +166,8 @@ typedef struct UIScene {
 //bsd
  // bool is_rhd;
  // bool driver_view;
+  float tpmsFl, tpmsFr, tpmsRl, tpmsRr;
+  bool is_OpenpilotViewEnabled;
   bool steerOverride;
   float angleSteers;
   float angleSteersDes;
@@ -181,6 +183,7 @@ typedef struct UIScene {
   bool dm_active, engageable;
 
   // lead
+  vertex_data lead_vertices_radar[2];
   vertex_data lead_vertices[2];
 
   float light_sensor, accel_sensor, gyro_sensor;

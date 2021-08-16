@@ -88,8 +88,6 @@ class SccSmoother:
 
     self.curve_speed_ms = 0.
 
-    self.fused_decel = []
-
   def reset(self):
 
     self.wait_timer = 0
@@ -99,8 +97,6 @@ class SccSmoother:
 
     self.max_speed_clu = 0.
     self.curve_speed_ms = 0.
-
-    self.fused_decel.clear()
 
     self.slowing_down = False
     self.slowing_down_alert = False
@@ -348,7 +344,7 @@ class SccSmoother:
     lead = self.get_lead(sm)
     if lead is not None:
       if not lead.radar:
-        brake_factor *= 0.93
+        brake_factor *= 0.95
 
     if accel > 0:
       accel *= gas_factor

@@ -50,6 +50,7 @@ class CarState(CarStateBase):
     self.prev_cruiseState_speed = 0 #장푸님 오토 크루즈 셋
 
     self.use_cluster_speed = Params().get_bool('UseClusterSpeed')
+    self.long_control_enabled = Params().get_bool('LongControlEnabled')
 
   def update(self, cp, cp2, cp_cam):
     cp_mdps = cp2 if self.mdps_bus else cp
@@ -72,21 +73,19 @@ class CarState(CarStateBase):
     self.is_set_speed_in_mph = bool(cp.vl["CLU11"]["CF_Clu_SPEED_UNIT"])
     self.speed_conv_to_ms = CV.MPH_TO_MS if self.is_set_speed_in_mph else CV.KPH_TO_MS
 
-    if self.use_cluster_speed:
-
+    if not self.use_cluster_speed or self.long_control_enabled:
+      ret.wheelSpeeds.fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.fr = cp.vl["WHL_SPD11"]['WHL_SPD_FR'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.rl = cp.vl["WHL_SPD11"]['WHL_SPD_RL'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.rr = cp.vl["WHL_SPD11"]['WHL_SPD_RR'] * CV.KPH_TO_MS
+      ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
+    else:
       ret.vEgoRaw = cp.vl["CLU11"]["CF_Clu_Vanz"]
       decimal = cp.vl["CLU11"]["CF_Clu_VanzDecimal"]
       if 0. < decimal < 0.5:
         ret.vEgoRaw += decimal
 
       ret.vEgoRaw *= self.speed_conv_to_ms
-
-    else:
-      ret.wheelSpeeds.fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.fr = cp.vl["WHL_SPD11"]['WHL_SPD_FR'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.rl = cp.vl["WHL_SPD11"]['WHL_SPD_RL'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.rr = cp.vl["WHL_SPD11"]['WHL_SPD_RR'] * CV.KPH_TO_MS
-      ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
 
@@ -144,6 +143,23 @@ class CarState(CarStateBase):
     if self.CP.hasEms:
       ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100.
       ret.gasPressed = bool(cp.vl["EMS16"]["CF_Ems_AclAct"])
+      
+    #TPMS
+    if cp.vl["TPMS11"]["UNIT"] == 0.0:
+      ret.tpmsFl = cp.vl["TPMS11"]["PRESSURE_FL"]
+      ret.tpmsFr = cp.vl["TPMS11"]["PRESSURE_FR"]
+      ret.tpmsRl = cp.vl["TPMS11"]["PRESSURE_RL"]
+      ret.tpmsRr = cp.vl["TPMS11"]["PRESSURE_RR"]
+    elif cp.vl["TPMS11"]["UNIT"] == 1.0:
+      ret.tpmsFl = cp.vl["TPMS11"]["PRESSURE_FL"] * 5 * 0.145038
+      ret.tpmsFr = cp.vl["TPMS11"]["PRESSURE_FR"] * 5 * 0.145038
+      ret.tpmsRl = cp.vl["TPMS11"]["PRESSURE_RL"] * 5 * 0.145038
+      ret.tpmsRr = cp.vl["TPMS11"]["PRESSURE_RR"] * 5 * 0.145038
+    elif cp.vl["TPMS11"]["UNIT"] == 2.0:
+      ret.tpmsFl = cp.vl["TPMS11"]["PRESSURE_FL"] / 10 * 14.5038
+      ret.tpmsFr = cp.vl["TPMS11"]["PRESSURE_FR"] / 10 * 14.5038
+      ret.tpmsRl = cp.vl["TPMS11"]["PRESSURE_RL"] / 10 * 14.5038
+      ret.tpmsRr = cp.vl["TPMS11"]["PRESSURE_RR"] / 10 * 14.5038
 
     # TODO: refactor gear parsing in function
     # Gear Selection via Cluster - For those Kia/Hyundai which are not fully discovered, we can use the Cluster Indicator for Gear Selection,
@@ -193,7 +209,7 @@ class CarState(CarStateBase):
 
     self.lkas_error = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] == 7
     if not self.lkas_error and self.car_fingerprint not in [CAR.SONATA,CAR.PALISADE,
-                    CAR.SONATA_HEV, CAR.SANTA_FE, CAR.KONA_EV, CAR.NIRO_EV, CAR.KONA]:
+                    CAR.SONATA_HEV, CAR.SONATA21_HEV, CAR.SANTA_FE, CAR.KONA_EV, CAR.NIRO_EV, CAR.KONA]:
       self.lkas_button_on = bool(cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"])
 
 
@@ -312,6 +328,12 @@ class CarState(CarStateBase):
       ("SCCMode2", "SCC14", 0),
       ("ComfortBandUpper", "SCC14", 0),
       ("ComfortBandLower", "SCC14", 0),
+
+      ("UNIT", "TPMS11", 0),
+      ("PRESSURE_FL", "TPMS11", 0),
+      ("PRESSURE_FR", "TPMS11", 0),
+      ("PRESSURE_RL", "TPMS11", 0),
+      ("PRESSURE_RR", "TPMS11", 0),      
     ]
 
     checks = [

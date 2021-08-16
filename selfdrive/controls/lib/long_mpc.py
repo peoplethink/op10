@@ -53,7 +53,7 @@ class LongitudinalMpc():
     speeds = v_cruise_clipped * np.ones(LON_MPC_N+1)
     accels = np.zeros(LON_MPC_N+1)
     self.update_with_xva(poss, speeds, accels)
-    
+
   def update_with_xva(self, poss, speeds, accels):
     # Calculate mpc
     self.libmpc.run_mpc(self.cur_state, self.mpc_solution,
