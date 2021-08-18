@@ -179,7 +179,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setContentsMargins(30, 75, 30, 45);
   finishRegistationLayout->setSpacing(0);
 
-  QLabel* registrationTitle = new QLabel("G E N E S I S");
+  QLabel* registrationTitle = new QLabel("OPENPILOT");
   registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold; margin-left: 55px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
@@ -192,7 +192,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addStretch();
 
-  QPushButton* finishButton = new QPushButton("Pair device");
+  QPushButton* finishButton = new QPushButton("GENESIS DH");
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
