@@ -1146,7 +1146,7 @@ static void ui_draw_vision_car(UIState *s) { //image designd by" Park byeoung kw
 //tpms
 static void ui_draw_tpms(UIState *s) {
   int viz_tpms_w = 140;
-  int viz_tpms_h = 138;
+  int viz_tpms_h = 135;
   int viz_tpms_x = s->fb_w - 185;
   int viz_tpms_y = 690;
   
