@@ -180,19 +180,19 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setSpacing(0);
 
   QLabel* registrationTitle = new QLabel("G E N E S I S");
-  registrationTitle->setStyleSheet("font-size: 90px; font-weight: bold; margin-left: 85px; margin-top:190px;");
+  registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold; margin-left: 55px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
   finishRegistationLayout->addSpacing(30);
 
-  QLabel* registrationDescription = new QLabel("");
+  QLabel* registrationDescription = new QLabel("Pair your device with comma connect (connect.comma.ai) and claim your comma prime offer.");
   registrationDescription->setWordWrap(true);
   registrationDescription->setStyleSheet("font-size: 55px; font-weight: light; margin-left: 55px;");
   finishRegistationLayout->addWidget(registrationDescription);
 
   finishRegistationLayout->addStretch();
 
-  QPushButton* finishButton = new QPushButton("marine2875/op70");
+  QPushButton* finishButton = new QPushButton("Pair device");
   finishButton->setFixedHeight(220);
   finishButton->setStyleSheet(R"(
     QPushButton {
