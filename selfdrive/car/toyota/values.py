@@ -10,8 +10,8 @@ PEDAL_HYST_GAP = 3. * CV.MPH_TO_MS
 
 class CarControllerParams:
   ACCEL_HYST_GAP = 0.02  # don't change accel command for small oscilalitons within this value
-  ACCEL_MAX = 1.5  # m/s2
-  ACCEL_MIN = -3.0  # m/s2
+  ACCEL_MAX = 1.5  # 1.5 m/s2
+  ACCEL_MIN = -3.0  # 3   m/s2
   ACCEL_SCALE = max(ACCEL_MAX, -ACCEL_MIN)
 
   STEER_MAX = 1500
@@ -630,7 +630,6 @@ FW_VERSIONS = {
       b'\x018966312R3100\x00\x00\x00\x00',
       b'\x018966312S5000\x00\x00\x00\x00',
       b'\x018966312S7000\x00\x00\x00\x00',
-      b'\x018966312W3000\x00\x00\x00\x00',
     ],
     (Ecu.engine, 0x7e0, None): [
       b'\x0230ZN4000\x00\x00\x00\x00\x00\x00\x00\x00A0202000\x00\x00\x00\x00\x00\x00\x00\x00',
