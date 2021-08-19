@@ -164,6 +164,6 @@ void LateralControl::refresh() {
   } else if (latcontrol == "2") {
     label.setText(QString::fromStdString("LQR"));
   }
-  btnminus.setText("¢¸");
-  btnplus.setText("¢º");
+  btnminus.setText("â—€");
+  btnplus.setText("â–¶");
 }
