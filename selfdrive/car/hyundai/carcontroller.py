@@ -103,7 +103,10 @@ class CarController():
     self.steer_rate_limited = new_steer != apply_steer
 
     # disable if steer angle reach 90 deg, otherwise mdps fault in some models
-    lkas_active = enabled and abs(CS.out.steeringAngleDeg) < CS.CP.maxSteeringAngleDeg
+    if self.car_fingerprint == CAR.GENESIS:
+      lkas_active = enabled and abs(CS.out.steeringAngleDeg) < CS.CP.maxSteeringAngleDeg
+    else:
+      lkas_active = enabled
 
     # fix for Genesis hard fault at low speed
     if CS.out.vEgo < 60 * CV.KPH_TO_MS and self.car_fingerprint == CAR.GENESIS and not CS.mdps_bus:
@@ -176,8 +179,8 @@ class CarController():
 
     if pcm_cancel_cmd and (self.longcontrol and not self.mad_mode_enabled):
       can_sends.append(create_clu11(self.packer, frame % 0x10, CS.scc_bus, CS.clu11, Buttons.CANCEL, clu11_speed))
-    else:
-      can_sends.append(create_mdps12(self.packer, frame, CS.mdps12))
+    if CS.mdps_bus:
+      can_sends.append(create_mdps12(self.packer, frame % 0x100, CS.mdps12))
 
     # fix auto resume - by neokii
     if CS.out.cruiseState.standstill and not CS.out.gasPressed:

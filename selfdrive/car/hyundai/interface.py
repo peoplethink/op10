@@ -47,19 +47,39 @@ class CarInterface(CarInterfaceBase):
     ret.maxSteeringAngleDeg = 90.
 
     # lateral
-    ret.lateralTuning.init('lqr')
+    params = Params()
+    lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
+    if lat_control_method == 0:
+      ret.lateralTuning.pid.kf = 0.00008
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.21], [0.08]]
+      ret.steerActuatorDelay = 0.20
+      ret.steerRateCost = 0.50
+      ret.steerLimitTimer = 0.4
+      ret.steerRatio = 11.6
+    elif lat_control_method == 1:
+      ret.lateralTuning.init('indi')
+      ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      ret.lateralTuning.indi.innerLoopGainV = [3.1]
+      ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      ret.lateralTuning.indi.outerLoopGainV = [2.5]
+      ret.lateralTuning.indi.timeConstantBP = [0.]
+      ret.lateralTuning.indi.timeConstantV = [1.4]
+      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [2.]
+      ret.steerRatio = 15.0
+    elif lat_control_method == 2:
+      ret.lateralTuning.init('lqr')
+      ret.lateralTuning.lqr.scale = 1700.
+      ret.lateralTuning.lqr.ki = 0.01
+      ret.lateralTuning.lqr.dcGain = 0.0028
+      ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
+      ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
+      ret.lateralTuning.lqr.c = [1., 0.]
+      ret.lateralTuning.lqr.k = [-110., 451.]
+      ret.lateralTuning.lqr.l = [0.33, 0.318]
+      ret.steerRatio = 15.5
 
-    ret.lateralTuning.lqr.scale = 1700.
-    ret.lateralTuning.lqr.ki = 0.01
-    ret.lateralTuning.lqr.dcGain = 0.0028
-
-    ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
-    ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
-    ret.lateralTuning.lqr.c = [1., 0.]
-    ret.lateralTuning.lqr.k = [-110., 451.]
-    ret.lateralTuning.lqr.l = [0.33, 0.318]
-
-    ret.steerRatio = 15.0
     ret.steerActuatorDelay = 0.1
     ret.steerLimitTimer = 2.5
     ret.steerRateCost = 0.4
@@ -88,7 +108,7 @@ class CarInterface(CarInterfaceBase):
 
     # genesis
     if candidate == CAR.GENESIS:
-      ret.mass = 2060. + STD_CARGO_KG
+      ret.mass = 1900. + STD_CARGO_KG
       ret.wheelbase = 3.01
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate == CAR.GENESIS_G70:
