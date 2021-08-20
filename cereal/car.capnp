@@ -108,6 +108,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     driverCameraError @101;
     wideRoadCameraError @102;
     localizerMalfunction @103;
+    highCpuUsage @105;
 
     driverMonitorLowAccDEPRECATED @68;
     radarCanErrorDEPRECATED @15;
@@ -130,11 +131,11 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     modelLagWarningDEPRECATED @93;
     startupOneplusDEPRECATED @82;
 
-    turningIndicatorOn @105;
-    autoLaneChange @106;
+    turningIndicatorOn @106;
+    autoLaneChange @107;
 
-    slowingDownSpeed @107;
-    slowingDownSpeedSound @108;
+    slowingDownSpeed @108;
+    slowingDownSpeedSound @109;
   }
 }
 
@@ -162,6 +163,7 @@ struct CarState {
 
   # steering wheel
   steeringAngleDeg @7 :Float32;
+  steeringAngleOffsetDeg @37 :Float32; # Offset betweens sensors in case there multiple
   steeringRateDeg @15 :Float32;
   steeringTorque @8 :Float32;      # TODO: standardize units
   steeringTorqueEps @27 :Float32;  # TODO: standardize units
