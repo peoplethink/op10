@@ -48,7 +48,7 @@ class CarInterface(CarInterfaceBase):
     ret.steerRateCost = 0.4   
     ret.maxSteeringAngleDeg = 90.
     ret.steerMaxBP = [0.]
-    ret.steerMaxV = [1.0]
+    ret.steerMaxV = [1.5]
     tire_stiffness_factor = 1.
     
     # lateral
