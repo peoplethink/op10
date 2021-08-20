@@ -11,7 +11,7 @@ EventName = car.CarEvent.EventName
 
 # ******************************************************************************************
 #  NOTE: To fork maintainers.
-#  Disabling or nerfing safety features may get you and your users banned from our servers.
+#  Disabling or nerfing safety features will get you and your users banned from our servers.
 #  We recommend that you do not change these numbers from the defaults.
 # ******************************************************************************************
 
@@ -29,9 +29,9 @@ class DRIVER_MONITOR_SETTINGS():
     self._PARTIAL_FACE_THRESHOLD = 0.765 if TICI else 0.455
     self._EYE_THRESHOLD = 0.25 if TICI else 0.57
     self._SG_THRESHOLD = 0.83
-    self._BLINK_THRESHOLD = 0.46 if TICI else 0.68
-    self._BLINK_THRESHOLD_SLACK = 0.6 if TICI else 0.88
-    self._BLINK_THRESHOLD_STRICT = 0.46 if TICI else 0.68
+    self._BLINK_THRESHOLD = 0.62 if TICI else 0.68
+    self._BLINK_THRESHOLD_SLACK = 0.82 if TICI else 0.88
+    self._BLINK_THRESHOLD_STRICT = 0.62 if TICI else 0.68
     self._PITCH_WEIGHT = 1.175 if TICI else 1.35  # pitch matters a lot more
     self._POSESTD_THRESHOLD = 0.2 if TICI else 0.175
     self._E2E_POSE_THRESHOLD = 0.95 if TICI else 0.9
