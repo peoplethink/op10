@@ -199,8 +199,9 @@ static void update_state(UIState *s) {
     float max_gain = Hardware::EON() ? 1.0: 10.0;
     float max_ev = max_lines * max_gain;
 
+    // C3 camera only uses about 10% of available gain at night
     if (Hardware::TICI) {
-      max_ev /= 6;
+      max_ev /= 10;
     }
 
     float ev = camera_state.getGain() * float(camera_state.getIntegLines());

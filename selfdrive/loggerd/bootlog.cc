@@ -30,7 +30,8 @@ static kj::Array<capnp::word> build_boot_log() {
     }
   }
 
-  boot.setLaunchLog(util::read_file("/tmp/launch_log"));
+  std::string launchLog = util::read_file("/tmp/launch_log");
+  boot.setLaunchLog(capnp::Text::Reader(launchLog.data(), launchLog.size()));
   return capnp::messageToFlatArray(msg);
 }
 
