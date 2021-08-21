@@ -480,12 +480,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   QPushButton *close_btn = new QPushButton("닫기");
   close_btn->setStyleSheet(R"(
     QPushButton {
-      font-size: 140px;
+      font-size: 50px;
       padding-bottom: 20px;
       font-weight: bold;
       border 1px grey solid;
       border-radius: 100px;
-      background-color: #292929;
+      background-color: #0100ff;
       font-weight: 400;
     }
     QPushButton:pressed {
