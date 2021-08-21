@@ -112,7 +112,7 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
 
   // reset calibration button
   QPushButton *reset_calib_btn = new QPushButton("캘리브레이션 및 파라미터 초기화");
-  reset_calib_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #00bfff;");
+  reset_calib_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #00ff00;");
   reset_layout->addWidget(reset_calib_btn);
   QObject::connect(reset_calib_btn, &QPushButton::released, [=]() {
     if (ConfirmationDialog::confirm("캘리브레이션 및 파라미터를 초기화 할까요?", this)) {
@@ -221,8 +221,8 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
       height: 120px;
       border-radius: 15px;
     }
-    #reboot_btn { background-color: #393939; }
-    #reboot_btn:pressed { background-color: #4a4a4a; }
+    #reboot_btn { background-color: #00bfff; }
+    #reboot_btn:pressed { background-color: #0000ff; }
     #poweroff_btn { background-color: #E22C2C; }
     #poweroff_btn:pressed { background-color: #FF2424; }
   )");
