@@ -42,7 +42,7 @@ class CarInterface(CarInterfaceBase):
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
 
-    tire_stiffness_factor = 1.
+    tire_stiffness_factor = 0.7 #1.0
     ret.maxSteeringAngleDeg = 90.
 
     # lateral
@@ -61,11 +61,11 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.indi.innerLoopGainBP = [0.]
       ret.lateralTuning.indi.innerLoopGainV = [3.1] #3.5
       ret.lateralTuning.indi.outerLoopGainBP = [0.]
-      ret.lateralTuning.indi.outerLoopGainV = [2.5] #2.0
+      ret.lateralTuning.indi.outerLoopGainV = [2.1] #2.0
       ret.lateralTuning.indi.timeConstantBP = [0.]
       ret.lateralTuning.indi.timeConstantV = [1.4]
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.] #2.3
+      ret.lateralTuning.indi.actuatorEffectivenessV = [1.3] #2.3
       ret.steerRatio = 15.0
     elif lat_control_method == 2:
       ret.lateralTuning.init('lqr')
@@ -79,9 +79,9 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.lqr.l = [0.33, 0.318]
       ret.steerRatio = 15.5
 
-    ret.steerActuatorDelay = 0.1
-    ret.steerLimitTimer = 2.5
-    ret.steerRateCost = 0.4
+    ret.steerActuatorDelay = 0.4 #0.1
+    ret.steerLimitTimer = 0.1 #2.5
+    ret.steerRateCost = 0.5 #0.4
     ret.steerMaxBP = [0.]
     ret.steerMaxV = [1.5]
 
@@ -108,7 +108,7 @@ class CarInterface(CarInterfaceBase):
 
     # genesis
     if candidate == CAR.GENESIS:
-      ret.mass = 2060. + STD_CARGO_KG
+      ret.mass = 2140. + STD_CARGO_KG
       ret.wheelbase = 3.01
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate == CAR.GENESIS_G70:
