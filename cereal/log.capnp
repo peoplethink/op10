@@ -301,7 +301,7 @@ struct DeviceState @0xa4d8b5af2aa492eb {
   startedMonoTime @13 :UInt64;
 
   lastAthenaPingTime @32 :UInt64;
-  wifiIpAddress @35 :Text;
+
   # system utilization
   freeSpacePercent @7 :Float32;
   memoryUsagePercent @19 :Int8;
@@ -323,6 +323,8 @@ struct DeviceState @0xa4d8b5af2aa492eb {
   batteryTempC @29 :Float32;
   ambientTempC @30 :Float32;
   thermalStatus @14 :ThermalStatus;
+  
+  wifiIpAddress @35 :Text;
 
   enum ThermalStatus {
     green @0;
@@ -1397,6 +1399,7 @@ struct RoadLimitSpeed {
     camLimitSpeed @5 :UInt16;
     sectionLimitSpeed @6 :UInt16;
     sectionLeftDist @7 :UInt16;
+    camSpeedFactor @8 :Float32;
 }
 
 struct Event {
