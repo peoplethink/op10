@@ -42,7 +42,7 @@ class CarInterface(CarInterfaceBase):
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
 
-    tire_stiffness_factor = 0.7 #1.0
+    tire_stiffness_factor = 0.8 #1.0
     ret.maxSteeringAngleDeg = 90.
 
     # lateral
