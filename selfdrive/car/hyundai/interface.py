@@ -66,7 +66,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.indi.timeConstantBP = [0.]
       ret.lateralTuning.indi.timeConstantV = [1.4]
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [2.1]
       ret.steerRatio = 15.0
     elif lat_control_method == 2:
       ret.lateralTuning.init('lqr')
