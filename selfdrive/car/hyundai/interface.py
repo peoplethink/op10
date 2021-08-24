@@ -37,7 +37,7 @@ class CarInterface(CarInterfaceBase):
     # Most Hyundai car ports are community features for now
     ret.communityFeature = True
     
-    tire_stiffness_factor = 1.
+    tire_stiffness_factor = 0.65
 
     eps_modified = False
     for fw in car_fw:
@@ -60,15 +60,23 @@ class CarInterface(CarInterfaceBase):
       
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
-      
-      ret.lateralTuning.indi.innerLoopGainBP = [0.]
-      ret.lateralTuning.indi.innerLoopGainV = [3.1]
-      ret.lateralTuning.indi.outerLoopGainBP = [0.]
-      ret.lateralTuning.indi.outerLoopGainV = [2.5]
-      ret.lateralTuning.indi.timeConstantBP = [0.]
-      ret.lateralTuning.indi.timeConstantV = [1.5]
+      ret.lateralTuning.indi.innerLoopGainBP = [10., 30.]
+      ret.lateralTuning.indi.innerLoopGainV = [3.1, 5.6] #5.5, 8.0
+      ret.lateralTuning.indi.outerLoopGainBP = [10., 30.]
+      ret.lateralTuning.indi.outerLoopGainV = [2.5, 5.0] #4.5, 7.0
+      ret.lateralTuning.indi.timeConstantBP = [10., 30.]
+      ret.lateralTuning.indi.timeConstantV = [1.5, 3.2] #1.8, 3.5
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
       ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
+      
+      #ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      #ret.lateralTuning.indi.innerLoopGainV = [3.1]
+      #ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      #ret.lateralTuning.indi.outerLoopGainV = [2.5]
+      #ret.lateralTuning.indi.timeConstantBP = [0.]
+      #ret.lateralTuning.indi.timeConstantV = [1.5]
+      #ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      #ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
       ret.steerRatio = 15.0
       
     elif lat_control_method == 2:
