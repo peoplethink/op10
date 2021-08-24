@@ -61,13 +61,13 @@ class CarInterface(CarInterfaceBase):
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.innerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.innerLoopGainV = [3.1, 5.6] #5.5, 8.0
+      ret.lateralTuning.indi.innerLoopGainV = [3.5, 6.0] #5.5, 8.0
       ret.lateralTuning.indi.outerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.outerLoopGainV = [2.5, 5.0] #4.5, 7.0
+      ret.lateralTuning.indi.outerLoopGainV = [2.0, 4.5] #4.5, 7.0
       ret.lateralTuning.indi.timeConstantBP = [10., 30.]
-      ret.lateralTuning.indi.timeConstantV = [1.5, 3.2] #1.8, 3.5
+      ret.lateralTuning.indi.timeConstantV = [1.4, 3.1] #1.8, 3.5
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.1]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [2.3]
       
       #ret.lateralTuning.indi.innerLoopGainBP = [0.]
       #ret.lateralTuning.indi.innerLoopGainV = [3.1]
@@ -77,7 +77,10 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.indi.timeConstantV = [1.5]
       #ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
       #ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
-      ret.steerRatio = 15.0
+      ret.steerActuatorDelay = 0.1
+      ret.steerRateCost = 0.25
+      ret.steerLimitTimer = 1.2
+      ret.steerRatio = 16.5
       
     elif lat_control_method == 2:
       ret.lateralTuning.init('lqr')
@@ -120,7 +123,7 @@ class CarInterface(CarInterfaceBase):
 
     # genesis
     if candidate == CAR.GENESIS:
-      ret.mass = 2140. + STD_CARGO_KG
+      ret.mass = 2060. + STD_CARGO_KG
       ret.wheelbase = 3.01
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate == CAR.GENESIS_G70:
