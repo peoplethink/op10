@@ -1054,7 +1054,7 @@ static void ui_draw_vision_event(UIState *s) {
       nvgBeginPath(s->vg);
       nvgCircle(s->vg, bg_wheel_x, (bg_wheel_y + (bdr_s*1.5)), bg_wheel_size);
       if (is_engaged) {
-        nvgFillColor(s->vg, nvgRGBA(0x5f, 0x9e, 0xa0, 0x90));
+        nvgFillColor(s->vg, nvgRGBA(0xff, 0xd7, 0x00, 0x90));
       } else if (is_warning) {
         nvgFillColor(s->vg, nvgRGBA(0x80, 0x80, 0x80, 0xff));
       } else if (is_engageable) {
