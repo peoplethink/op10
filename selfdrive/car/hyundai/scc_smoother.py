@@ -191,11 +191,11 @@ class SccSmoother:
     CC.sccSmoother.roadLimitSpeedLeftDist = left_dist
 
     # kph
-    controls.cruiseVirtualMaxSpeed = float(clip(CS.cruiseState_speed * CV.MS_TO_KPH, MIN_SET_SPEED_KPH,
+    controls.applyMaxSpeed = float(clip(CS.cruiseState_speed * CV.MS_TO_KPH, MIN_SET_SPEED_KPH,
                                                 self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
     CC.sccSmoother.longControl = self.longcontrol
-    CC.sccSmoother.cruiseVirtualMaxSpeed = controls.cruiseVirtualMaxSpeed
-    CC.sccSmoother.cruiseRealMaxSpeed = controls.v_cruise_kph
+    CC.sccSmoother.applyMaxSpeed = controls.applyMaxSpeed
+    CC.sccSmoother.cruiseMaxSpeed = controls.v_cruise_kph
 
     CC.sccSmoother.autoTrGap = AUTO_TR_CRUISE_GAP
     ascc_enabled = CS.acc_mode and enabled and CS.cruiseState_enabled and 1 < CS.cruiseState_speed < 255 and not CS.brake_pressed
