@@ -44,7 +44,7 @@ class CarInterface(CarInterfaceBase):
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
 
-    ret.maxSteeringAngleDeg = 120.
+    ret.maxSteeringAngleDeg = 90.
 
     # lateral
     params = Params()
