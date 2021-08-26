@@ -1,4 +1,3 @@
-import os
 import math
 import numpy as np
 from common.params import Params
@@ -19,7 +18,6 @@ AUTO_LCA_START_TIME = 0.3
 LaneChangeState = log.LateralPlan.LaneChangeState
 LaneChangeDirection = log.LateralPlan.LaneChangeDirection
 
-LOG_MPC = os.environ.get('LOG_MPC', False)
 
 LANE_CHANGE_SPEED_MIN = 60 * CV.KPH_TO_MS
 LANE_CHANGE_TIME_MAX = 10.
@@ -266,12 +264,3 @@ class LateralPlanner():
     plan_send.lateralPlan.autoLaneChangeTimer = int(AUTO_LCA_START_TIME) - int(self.auto_lane_change_timer)
 
     pm.send('lateralPlan', plan_send)
-
-    if LOG_MPC:
-      dat = messaging.new_message('liveMpc')
-      dat.liveMpc.x = list(self.mpc_solution.x)
-      dat.liveMpc.y = list(self.mpc_solution.y)
-      dat.liveMpc.psi = list(self.mpc_solution.psi)
-      dat.liveMpc.curvature = list(self.mpc_solution.curvature)
-      dat.liveMpc.cost = self.mpc_solution.cost
-      pm.send('liveMpc', dat)
