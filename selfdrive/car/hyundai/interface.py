@@ -60,26 +60,26 @@ class CarInterface(CarInterfaceBase):
       
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.innerLoopGainV = [3.5, 6.0] #3.5, 6.0
-      ret.lateralTuning.indi.outerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.outerLoopGainV = [2.1, 4.5] #2.0, 4.5
-      ret.lateralTuning.indi.timeConstantBP = [10., 30.]
-      ret.lateralTuning.indi.timeConstantV = [1.4, 3.1] #1.4, 3.1
-      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.32]
-      
-      #ret.lateralTuning.indi.innerLoopGainBP = [0.]
-      #ret.lateralTuning.indi.innerLoopGainV = [3.1]
-      #ret.lateralTuning.indi.outerLoopGainBP = [0.]
-      #ret.lateralTuning.indi.outerLoopGainV = [2.5]
-      #ret.lateralTuning.indi.timeConstantBP = [0.]
-      #ret.lateralTuning.indi.timeConstantV = [1.5]
+      #ret.lateralTuning.indi.innerLoopGainBP = [10., 30.]
+      #ret.lateralTuning.indi.innerLoopGainV = [3.5, 6.0] #3.5, 6.0
+      #ret.lateralTuning.indi.outerLoopGainBP = [10., 30.]
+      #ret.lateralTuning.indi.outerLoopGainV = [2.1, 4.5] #2.0, 4.5
+      #ret.lateralTuning.indi.timeConstantBP = [10., 30.]
+      #ret.lateralTuning.indi.timeConstantV = [1.4, 3.1] #1.4, 3.1
       #ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      #ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
+      #ret.lateralTuning.indi.actuatorEffectivenessV = [2.32]
+      
+      ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      ret.lateralTuning.indi.innerLoopGainV = [3.1]
+      ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      ret.lateralTuning.indi.outerLoopGainV = [2.5]
+      ret.lateralTuning.indi.timeConstantBP = [0.]
+      ret.lateralTuning.indi.timeConstantV = [1.5]
+      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
       ret.steerActuatorDelay = 0.1
-      ret.steerRateCost = 0.25
-      ret.steerLimitTimer = 1.2
+      ret.steerRateCost = 0.4
+      ret.steerLimitTimer = 2.5
       ret.steerRatio = 16.5
       
     elif lat_control_method == 2:
@@ -99,7 +99,7 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 2.0
     ret.steerRateCost = 0.4
     ret.steerMaxBP = [0.]
-    ret.steerMaxV = [1.8]
+    ret.steerMaxV = [1.5]
     
     # longitudinal
     ret.longitudinalTuning.kpBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
