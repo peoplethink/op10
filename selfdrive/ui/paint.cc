@@ -980,7 +980,7 @@ static void ui_draw_vision_speed(UIState *s) {
   const std::string speed_str = std::to_string((int)std::nearbyint(speed));
 	
   // turning blinker from kegman, moving signal by OPKR
-  if (scene->leftBlinker) {
+  if (scene.leftBlinker) {
     nvgBeginPath(s->vg);
     nvgMoveTo(s->vg, viz_speed_x, header_h2/4);
     nvgLineTo(s->vg, viz_speed_x - viz_speed_w/4, header_h2/4);
@@ -1012,7 +1012,7 @@ static void ui_draw_vision_speed(UIState *s) {
     nvgFillColor(s->vg, nvgRGBA(255,230,70,(scene.blinker_blinkingrate<=80 && scene.blinker_blinkingrate>=50)?210:0));
     nvgFill(s->vg);
   }
-  if (scene->rightBlinker) {
+  if (scene.rightBlinker) {
     nvgBeginPath(s->vg);
     nvgMoveTo(s->vg, viz_speed_x + viz_speed_w, header_h2/4);
     nvgLineTo(s->vg, viz_speed_x + viz_speed_w + viz_speed_w/4, header_h2/4);
@@ -1044,9 +1044,9 @@ static void ui_draw_vision_speed(UIState *s) {
     nvgFillColor(s->vg, nvgRGBA(255,230,70,(scene.blinker_blinkingrate<=80 && scene.blinker_blinkingrate>=50)?210:0));
     nvgFill(s->vg);
     }
-  if(s->scene.leftBlinker || s->scene.rightBlinker) {
-    s->scene.blinker_blinkingrate -= 5;
-    if(s->scene.blinker_blinkingrate < 0) s->scene.blinker_blinkingrate = 120;
+  if (scene.leftBlinker || scene.rightBlinker) {
+    scene.blinker_blinkingrate -= 5;
+    if(scene.blinker_blinkingrate < 0) scene.blinker_blinkingrate = 120;
   }
 	
   NVGcolor val_color = COLOR_WHITE;
