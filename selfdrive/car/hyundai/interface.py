@@ -55,8 +55,8 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kpV = [0.12]
       ret.lateralTuning.pid.kiBP = [0.]
       ret.lateralTuning.pid.kiV = [0.03]
-      ret.lateralTuning.pid.kdBP = [0.]
-      ret.lateralTuning.pid.kdV = [1.5]
+      #ret.lateralTuning.pid.kdBP = [0.]
+      #ret.lateralTuning.pid.kdV = [1.5]
       
       ret.steerActuatorDelay = 0.20
       ret.steerRateCost = 0.50
@@ -105,8 +105,8 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.kiV = [0.03, 0.02]
     ret.longitudinalTuning.kfBP = [0.]
     ret.longitudinalTuning.kfV = [1.0]
-    ret.longitudinalTuning.kdBP = [0., 4., 9., 17., 23., 31.]
-    ret.longitudinalTuning.kdV = [0.7, 0.65, 0.5, 0.4, 0.3, 0.2]
+    #ret.longitudinalTuning.kdBP = [0., 4., 9., 17., 23., 31.]
+    #ret.longitudinalTuning.kdV = [0.7, 0.65, 0.5, 0.4, 0.3, 0.2]
     ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
     
