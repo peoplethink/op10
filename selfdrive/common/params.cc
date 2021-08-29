@@ -46,21 +46,25 @@ int fsync_dir(const char* path) {
   return result;
 }
 
+// TODO: replace by std::filesystem::create_directories
 int mkdir_p(std::string path) {
   char * _path = (char *)path.c_str();
 
+  mode_t prev_mask = umask(0);
   for (char *p = _path + 1; *p; p++) {
     if (*p == '/') {
       *p = '\0'; // Temporarily truncate
-      if (mkdir(_path, 0775) != 0) {
+      if (mkdir(_path, 0777) != 0) {
         if (errno != EEXIST) return -1;
       }
       *p = '/';
     }
   }
-  if (mkdir(_path, 0775) != 0) {
+  if (mkdir(_path, 0777) != 0) {
     if (errno != EEXIST) return -1;
   }
+  chmod(_path, 0777);
+  umask(prev_mask);
   return 0;
 }
 
@@ -84,6 +88,10 @@ bool create_params_path(const std::string &param_path, const std::string &key_pa
       return false;
     }
 
+    if (chmod(tmp_dir, 0777) != 0) {
+      return false;
+    }
+
     std::string link_path = std::string(tmp_dir) + ".link";
     if (symlink(tmp_dir, link_path.c_str()) != 0) {
       return false;
@@ -95,7 +103,8 @@ bool create_params_path(const std::string &param_path, const std::string &key_pa
     }
   }
 
-  return true;
+  // Ensure permissions are correct in case we didn't create the symlink
+  return chmod(key_path.c_str(), 0777) == 0;
 }
 
 void ensure_params_path(const std::string &params_path) {
@@ -268,6 +277,8 @@ int Params::put(const char* key, const char* value, size_t value_size) {
       break;
     }
 
+    // change permissions to 0666 for apks
+    if ((result = fchmod(tmp_fd, 0666)) < 0) break;
     // fsync to force persist the changes.
     if ((result = fsync(tmp_fd)) < 0) break;
 

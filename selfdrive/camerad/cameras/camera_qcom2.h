@@ -1,5 +1,7 @@
 #pragma once
 
+#include <pthread.h>
+
 #include <cstdint>
 
 #include <media/cam_req_mgr.h>
@@ -54,6 +56,8 @@ typedef struct CameraState {
 } CameraState;
 
 typedef struct MultiCameraState {
+  int device;
+
   unique_fd video0_fd;
   unique_fd video1_fd;
   unique_fd isp_fd;
@@ -64,6 +68,8 @@ typedef struct MultiCameraState {
   CameraState road_cam;
   CameraState wide_road_cam;
   CameraState driver_cam;
+
+  pthread_mutex_t isp_lock;
 
   SubMaster *sm;
   PubMaster *pm;
