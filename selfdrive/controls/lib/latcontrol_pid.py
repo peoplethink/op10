@@ -7,11 +7,10 @@ from cereal import log
 
 class LatControlPID():
   def __init__(self, CP):
-    self.pid = LatPIDController((CP.lateralTuning.pid.kpBP, CP.lateralTuning.pid.kpV),
+    self.pid = PIController((CP.lateralTuning.pid.kpBP, CP.lateralTuning.pid.kpV),
                             (CP.lateralTuning.pid.kiBP, CP.lateralTuning.pid.kiV),
-                                (CP.lateralTuning.pid.kdBP, CP.lateralTuning.pid.kdV),
-                                k_f=CP.lateralTuning.pid.kf, pos_limit=1.0, neg_limit=-1.0,
-                                sat_limit=CP.steerLimitTimer)
+                            ([0.], [CP.lateralTuning.pid.kf]),
+                            pos_limit=1.0, neg_limit=-1.0, sat_limit=CP.steerLimitTimer)
 
   def reset(self):
     self.pid.reset()
