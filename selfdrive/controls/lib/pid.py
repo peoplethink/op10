@@ -10,7 +10,7 @@ def apply_deadzone(error, deadzone):
     error = 0.
   return error
 
-class PICController():
+class PIController():
   def __init__(self, k_p, k_i, k_f=None, pos_limit=None, neg_limit=None, rate=100, sat_limit=0.8, convert=None):
     if k_f is None:
       k_f = [0., 1.]
@@ -40,7 +40,7 @@ class PICController():
   @property
   def k_f(self):
     return interp(self.speed, self._k_f[0], self._k_f[1])
-  
+
   def _check_saturation(self, control, check_saturation, error):
     saturated = (control < self.neg_limit) or (control > self.pos_limit)
 
@@ -72,7 +72,7 @@ class PICController():
       self.i -= self.i_unwind_rate * float(np.sign(self.i))
     else:
       i = self.i + error * self.k_i * self.i_rate
-      control = self.p + self.f + i 
+      control = self.p + self.f + i
 
       if self.convert is not None:
         control = self.convert(control, speed=self.speed)
@@ -84,7 +84,7 @@ class PICController():
          not freeze_integrator:
         self.i = i
 
-    control = self.p + self.f + self.i 
+    control = self.p + self.f + self.i
     if self.convert is not None:
       control = self.convert(control, speed=self.speed)
 
@@ -92,4 +92,3 @@ class PICController():
 
     self.control = clip(control, self.neg_limit, self.pos_limit)
     return self.control
-
