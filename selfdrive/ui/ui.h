@@ -63,6 +63,7 @@
 #define COLOR_BLUE_ALPHA(x) nvgRGBA(0, 0, 255, x)
 #define COLOR_ORANGE nvgRGBA(255, 175, 3, 255)
 #define COLOR_ORANGE_ALPHA(x) nvgRGBA(255, 175, 3, x)
+#define COLOR_GREY nvgRGBA(191, 191, 191, 1
 #define COLOR_ENGAGED nvgRGBA(0, 170, 255, 255)
 #define COLOR_ENGAGED_ALPHA(x) nvgRGBA(0, 170, 255, x)
 //#define COLOR_WARNING nvgRGBA(218, 111, 37, 100)
@@ -121,6 +122,7 @@ const int CONTROLS_TIMEOUT = 5;
 const int bdr_s = 10;
 const int header_h = 420;
 const int footer_h = 280;
+const Rect laneless_btn = {1585, 905, 140, 140};
 
 const int UI_FREQ = 20;   // Hz
 
@@ -172,6 +174,12 @@ typedef struct UIScene {
   float angleSteers;
   float angleSteersDes;
   cereal::PandaState::PandaType pandaType;
+  
+  int laneless_mode;
+
+  cereal::CarState::Reader car_state;
+  cereal::ControlsState::Reader controls_state;
+  cereal::LateralPlan::Reader lateral_plan;
 
   // modelV2
   float lane_line_probs[4];
@@ -189,6 +197,17 @@ typedef struct UIScene {
   float light_sensor, accel_sensor, gyro_sensor;
   bool started, ignition, is_metric, longitudinal_control, end_to_end;
   uint64_t started_frame;
+  
+  struct _LateralPlan
+  {
+    float laneWidth;
+
+    float dProb;
+    float lProb;
+    float rProb;
+
+    bool lanelessModeStatus;
+  } lateralPlan;
 
   // neokii dev UI
   cereal::CarControl::Reader car_control;

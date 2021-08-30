@@ -37,6 +37,7 @@ def manager_init():
   default_params = [
 
     ("OpenpilotEnabledToggle", "1"),
+    ("LanelessMode", "0"),
     ("CommunityFeaturesToggle", "1"),
     ("IsMetric", "1"),
 
