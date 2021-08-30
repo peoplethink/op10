@@ -1151,8 +1151,8 @@ static void ui_draw_vision_face(UIState *s) {
 
 static void draw_laneless_button(UIState *s) {
   if (s->vipc_client->connected) {
-    int btn_w = 150;
-    int btn_h = 150;
+    int btn_w = 155;
+    int btn_h = 155;
     int btn_x1 = s->fb_w - btn_w - 195 -20 - 20;
     int btn_y = 1080 - btn_h - 35 - (btn_h / 2) + 35;
     int btn_xc1 = btn_x1 + (btn_w/2);
@@ -1163,7 +1163,7 @@ static void draw_laneless_button(UIState *s) {
     nvgStrokeColor(s->vg, nvgRGBA(0,0,0,80));
     nvgStrokeWidth(s->vg, 6);
     nvgStroke(s->vg);
-    nvgFontSize(s->vg, 43);
+    nvgFontSize(s->vg, 45);
 
     if (s->scene.laneless_mode == 0) {
       nvgStrokeColor(s->vg, nvgRGBA(0,125,0,255));
