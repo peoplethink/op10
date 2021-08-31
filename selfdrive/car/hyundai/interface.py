@@ -58,10 +58,10 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kdBP = [0.]
       ret.lateralTuning.pid.kdV = [1.5]
       
-      ret.steerActuatorDelay = 0.20
-      ret.steerRateCost = 0.35
-      ret.steerLimitTimer = 2.0
-      ret.steerRatio = 14.0
+      ret.steerActuatorDelay = 0.1
+      ret.steerRateCost = 1.2
+      ret.steerLimitTimer = 0.4
+      ret.steerRatio = 14.8
       
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
