@@ -13,7 +13,7 @@ CRUISE_GAP_BP = [1., 2., 3., 4.]
 CRUISE_GAP_V = [1.3, 1.6, 2., 2.5]
 
 AUTO_TR_BP = [3., 11.1, 19.4, 30.]
-AUTO_TR_V = [1.1, 1.2, 1.35, 1.88]
+AUTO_TR_V = [1.2, 1.3, 1.45, 1.88]
 
 AUTO_TR_ENABLED = True
 AUTO_TR_CRUISE_GAP = 4
