@@ -52,9 +52,9 @@ class CarInterface(CarInterfaceBase):
     if lat_control_method == 0:
       ret.lateralTuning.pid.kf = 0.00008
       ret.lateralTuning.pid.kpBP = [0.]
-      ret.lateralTuning.pid.kpV = [0.12]
+      ret.lateralTuning.pid.kpV = [0.21]
       ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.03]
+      ret.lateralTuning.pid.kiV = [0.08]
       ret.lateralTuning.pid.kdBP = [0.]
       ret.lateralTuning.pid.kdV = [1.5]
       
