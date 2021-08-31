@@ -50,7 +50,7 @@ class CarInterface(CarInterfaceBase):
     params = Params()
     lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
     if lat_control_method == 0:
-      ret.lateralTuning.pid.kf = 0.00005
+      ret.lateralTuning.pid.kf = 0.00008
       ret.lateralTuning.pid.kpBP = [0.]
       ret.lateralTuning.pid.kpV = [0.12]
       ret.lateralTuning.pid.kiBP = [0.]
@@ -58,10 +58,10 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kdBP = [0.]
       ret.lateralTuning.pid.kdV = [1.5]
       
-      ret.steerActuatorDelay = 0.1
-      ret.steerRateCost = 1.2
+      ret.steerActuatorDelay = 0.2
+      ret.steerRateCost = 0.5
       ret.steerLimitTimer = 0.4
-      ret.steerRatio = 14.8
+      ret.steerRatio = 11.6
       
     elif lat_control_method == 1:
       ret.lateralTuning.init('indi')
