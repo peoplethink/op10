@@ -1154,7 +1154,7 @@ static void draw_laneless_button(UIState *s) {
     int btn_w = 153;
     int btn_h = 153;
     int btn_x1 = s->fb_w - btn_w - 195 -20 - 20 + 195;
-    int btn_y = 1080 - btn_h - 35 - (btn_h / 2) + 39 - 190;
+    int btn_y = 1080 - btn_h - 35 - (btn_h / 2) + 39 - 180;
     int btn_xc1 = btn_x1 + (btn_w/2);
     int btn_yc = btn_y + (btn_h/2);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
@@ -1254,7 +1254,7 @@ static void ui_draw_vision_car(UIState *s) { //image designd by" Park byeoung kw
 static void ui_draw_tpms(UIState *s) {
   int viz_tpms_w = 140;
   int viz_tpms_h = 130;
-  int viz_tpms_x = s->fb_w - 185;
+  int viz_tpms_x = s->fb_w - 200;
   int viz_tpms_y = 690 - 140;
   
   char tpmsFl[32];
