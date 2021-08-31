@@ -1153,17 +1153,17 @@ static void draw_laneless_button(UIState *s) {
   if (s->vipc_client->connected) {
     int btn_w = 153;
     int btn_h = 153;
-    int btn_x1 = s->fb_w - btn_w - 195 -20 - 20 + 195;
-    int btn_y = 1080 - btn_h - 35 - (btn_h / 2) + 39 - 175;
+    int btn_x1 = s->fb_w - btn_w - 195 -20 - 20;
+    int btn_y = 1080 - btn_h - 35 - (btn_h / 2) + 39;
     int btn_xc1 = btn_x1 + (btn_w/2);
     int btn_yc = btn_y + (btn_h/2);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     nvgBeginPath(s->vg);
     nvgRoundedRect(s->vg, btn_x1, btn_y, btn_w, btn_h, 100);
     nvgStrokeColor(s->vg, nvgRGBA(0,0,0,80));
-    nvgStrokeWidth(s->vg, 6);
+    nvgStrokeWidth(s->vg, 7);
     nvgStroke(s->vg);
-    nvgFontSize(s->vg, 46);
+    nvgFontSize(s->vg, 48);
 
     if (s->scene.laneless_mode == 0) {
       nvgStrokeColor(s->vg, nvgRGBA(0,125,0,255));
@@ -1255,7 +1255,7 @@ static void ui_draw_tpms(UIState *s) {
   int viz_tpms_w = 140;
   int viz_tpms_h = 130;
   int viz_tpms_x = s->fb_w - 185;
-  int viz_tpms_y = 690 - 160;
+  int viz_tpms_y = 690;
   
   char tpmsFl[32];
   char tpmsFr[32];
@@ -1266,7 +1266,7 @@ static void ui_draw_tpms(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(80), 5, 20);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
-  const int pos_y = 796 - 160;
+  const int pos_y = 796;
   const int pos_add = 38;
   const int fontsize = 65;
 
