@@ -75,7 +75,7 @@ class LeadMpc():
       TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
 
     if lead is not None and lead.status:
-      x_lead = lead.dRel - 1.5
+      x_lead = lead.dRel 
       v_lead = max(0.0, lead.vLead)
       a_lead = lead.aLeadK
 
