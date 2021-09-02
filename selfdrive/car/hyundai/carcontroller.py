@@ -195,7 +195,7 @@ class CarController():
         pass
 
       elif self.resume_wait_timer > 0:
-        self.resume_wait_timer -= 1
+        self.resume_wait_timer -= 0
 
       elif abs(CS.lead_distance - self.last_lead_distance) > 0.01:
         can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.scc_bus, CS.clu11, Buttons.RES_ACCEL, clu11_speed))
