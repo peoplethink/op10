@@ -382,7 +382,8 @@ QWidget * community_panel() {
 
     });
 
-  toggles_list->addWidget(supported_cars);
+  if(Hardware::EON())
+    toggles_list->addWidget(supported_cars);
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new LateralControl());
   toggles_list->addWidget(horizontal_line());
