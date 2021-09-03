@@ -179,13 +179,13 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistationLayout->setContentsMargins(30, 75, 30, 45);
   finishRegistationLayout->setSpacing(0);
 
-  QLabel* registrationTitle = new QLabel("OPENPILOT");
+  QLabel* registrationTitle = new QLabel("FEATURE");
   registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold; margin-left: 55px;");
   finishRegistationLayout->addWidget(registrationTitle);
 
   finishRegistationLayout->addSpacing(30);
 
-  QLabel* registrationDescription = new QLabel("Feature\n 1.Dynamic Lane Profile\n  (토글메뉴->Kale모드 활성화)\n 2.Lateral Control Select\n  (PID-> D gain 추가)");
+  QLabel* registrationDescription = new QLabel("1.Dynamic Lane Profile\n (토글>Kale모드 활성화)\n2.Lateral Control Select\n (PID-> D gain 추가)");
   registrationDescription->setWordWrap(true);
   registrationDescription->setStyleSheet("font-size: 55px; font-weight: light; margin-left: 55px;");
   finishRegistationLayout->addWidget(registrationDescription);
