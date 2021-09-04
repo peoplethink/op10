@@ -59,7 +59,7 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.pid.kdBP = [0.]
       #ret.lateralTuning.pid.kdV = [1.0]
       
-      ret.lateralTuning.pid.kf = 0.00005
+      ret.lateralTuning.pid.kf = 0.00004
       ret.lateralTuning.pid.kpBP = [0.]
       ret.lateralTuning.pid.kpV = [0.16]
       ret.lateralTuning.pid.kiBP = [0.]
@@ -74,8 +74,8 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.5
       
     elif lat_control_method == 1:
-      ret.lateralTuning.init('indi')
       ret.lateralTuning.pid.kf = 0.00005
+      ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.innerLoopGainBP = [0.]
       ret.lateralTuning.indi.innerLoopGainV = [3.5]
       ret.lateralTuning.indi.outerLoopGainBP = [0.]
