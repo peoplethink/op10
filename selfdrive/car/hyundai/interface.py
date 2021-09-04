@@ -50,7 +50,7 @@ class CarInterface(CarInterfaceBase):
     params = Params()
     lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
     if lat_control_method == 0:
-      ret.lateralTuning.pid.kf = 0.00002
+      ret.lateralTuning.pid.kf = 0.00003
       ret.lateralTuning.pid.kpBP = [0.]
       ret.lateralTuning.pid.kpV = [0.125]
       ret.lateralTuning.pid.kiBP = [0.]
@@ -100,7 +100,7 @@ class CarInterface(CarInterfaceBase):
     # longitudinal
     
     ret.longitudinalTuning.kpBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kpV = [1.44, 1.27, 0.99, 0.735, 0.63, 0.54, 0.46]
+    ret.longitudinalTuning.kpV = [1.45, 1.28, 0.99, 0.735, 0.63, 0.54, 0.46]
     ret.longitudinalTuning.kiBP = [0., 130. * CV.KPH_TO_MS]
     ret.longitudinalTuning.kiV = [0.03, 0.02]
     ret.longitudinalTuning.kfBP = [0.]
@@ -111,14 +111,14 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
     
     ret.gasMaxBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 50.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.gasMaxV = [0.648, 0.450, 0.355, 0.24, 0.17, 0.13]
+    ret.gasMaxV = [0.648, 0.550, 0.345, 0.24, 0.17, 0.13]
 
     ret.brakeMaxBP = [0, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
     ret.brakeMaxV = [1.5, 1.0, 0.7]
     
     ret.stoppingBrakeRate = 0.15  # brake_travel/s while trying to stop
     ret.startingBrakeRate = 1.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 1.8
+    ret.startAccel = 1.7
     
     ret.steerMaxBP = [0.]
     ret.steerMaxV = [1.5]
