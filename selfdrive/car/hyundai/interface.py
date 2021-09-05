@@ -75,6 +75,7 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.5
       
     elif lat_control_method == 1:
+      ret.lateralTuning.pid.kf = 0.00003
       ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.innerLoopGainBP = [0.]
       ret.lateralTuning.indi.innerLoopGainV = [3.1]
