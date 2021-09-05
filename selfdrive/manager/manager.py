@@ -53,6 +53,7 @@ def manager_init():
     ("SccSmootherSyncGasPressed", "0"),
     ("StockNaviDecelEnabled", "0"),
     ("ShowDebugUI", "0"),
+    ("IsOpenpilotViewEnabled", "0"),
     ("LateralControlMethod", "0"),
     ("CustomLeadMark", "0")
   ]
