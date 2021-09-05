@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import numpy as np
-
+import os
+import shutil
+from os import path
 from cereal import car
 from selfdrive.config import Conversions as CV
 from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS, Buttons, FEATURES
@@ -51,13 +53,21 @@ class CarInterface(CarInterfaceBase):
     lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
     if lat_control_method == 0:
       ret.lateralTuning.init('pid')
-      ret.lateralTuning.pid.kf = 0.000027
-      ret.lateralTuning.pid.kpBP = [0.]
-      ret.lateralTuning.pid.kpV = [0.125]
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.01]
-      ret.lateralTuning.pid.kdBP = [0.]
-      ret.lateralTuning.pid.kdV = [1.0]
+      #ret.lateralTuning.pid.kf = 0.000027
+      #ret.lateralTuning.pid.kpBP = [0.]
+      #ret.lateralTuning.pid.kpV = [0.125]
+      #ret.lateralTuning.pid.kiBP = [0.]
+      #ret.lateralTuning.pid.kiV = [0.01]
+      #ret.lateralTuning.pid.kdBP = [0.]
+      #ret.lateralTuning.pid.kdV = [1.0]
+      
+      ret.lateralTuning.pid.kf = 0.00003
+      ret.lateralTuning.pid.kpBP = [20., 31.]
+      ret.lateralTuning.pid.kpV = [0.05, 0.12]
+      ret.lateralTuning.pid.kiBP = [20., 31.]
+      ret.lateralTuning.pid.kiV = [0.001, 0.01]
+      ret.lateralTuning.pid.kdBP = [20., 31.]
+      ret.lateralTuning.pid.kdV = [0.0, 0.0]
       
       ret.steerActuatorDelay = 0.1
       ret.steerRateCost = 0.4
@@ -65,16 +75,15 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.5
       
     elif lat_control_method == 1:
-      ret.lateralTuning.pid.kf = 0.00005
       ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.innerLoopGainBP = [0.]
-    ret.lateralTuning.indi.innerLoopGainV = [3.1]
+      ret.lateralTuning.indi.innerLoopGainV = [3.1]
       ret.lateralTuning.indi.outerLoopGainBP = [0.]
-    ret.lateralTuning.indi.outerLoopGainV = [2.5]
+      ret.lateralTuning.indi.outerLoopGainV = [2.5]
       ret.lateralTuning.indi.timeConstantBP = [0.]
       ret.lateralTuning.indi.timeConstantV = [1.4]
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-    ret.lateralTuning.indi.actuatorEffectivenessV = [2.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [2.]
       
       ret.steerActuatorDelay = 0.1
       ret.steerRateCost = 0.4
