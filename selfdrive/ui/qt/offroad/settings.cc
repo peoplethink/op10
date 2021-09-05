@@ -1,8 +1,11 @@
 #include "selfdrive/ui/qt/offroad/settings.h"
-
+#include <stdlib.h>
+#include <stdio.h>
 #include <cassert>
 #include <string>
-
+#include <iostream>       // std::cout, std::endl
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
 #include <QDebug>
 
 #ifndef QCOM
@@ -439,6 +442,12 @@ QWidget * community_panel() {
   toggles_list->addWidget(new ParamControl("StockNaviDecelEnabled",
                                             "Stock Navi based deceleration",
                                             "Use the stock navi based deceleration for longcontrol",
+                                            "../assets/offroad/icon_road.png"
+                                            ));
+  toggles_list->addWidget(horizontal_line());  
+  toggles_list->addWidget(new ParamControl("SmartMDPS",
+                                            "Use Smart MDPS",
+                                            "Turn On for car with smart mdps harness for down to 0 mph openpilot steering",
                                             "../assets/offroad/icon_road.png"
                                             ));
   toggles_list->addWidget(horizontal_line());
