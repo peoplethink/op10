@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
-import os
-import shutil
-from os import path
+
 from cereal import car
 from selfdrive.config import Conversions as CV
 from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS, Buttons, FEATURES
