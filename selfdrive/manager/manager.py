@@ -45,6 +45,7 @@ def manager_init():
     ("UseClusterSpeed", "1"),
     ("LongControlEnabled", "0"),
     ("MadModeEnabled", "1"),
+    ("SmartMDPS", "0"),
     ("IsLdwsCar", "0"),
     ("LaneChangeEnabled", "0"),
     ("AutoLaneChangeEnabled", "0"),
