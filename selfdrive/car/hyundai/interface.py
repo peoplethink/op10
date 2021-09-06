@@ -2,8 +2,9 @@
 import numpy as np
 
 from cereal import car
+from common.numpy_fast import interp
 from selfdrive.config import Conversions as CV
-from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS, Buttons, FEATURES
+from selfdrive.car.hyundai.values import CAR, Buttons
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
 from selfdrive.controls.lib.lateral_planner import LANE_CHANGE_SPEED_MIN
@@ -20,8 +21,17 @@ class CarInterface(CarInterfaceBase):
     self.mad_mode_enabled = Params().get_bool('MadModeEnabled')
 
   @staticmethod
-  def compute_gb(accel, speed):
-    return float(accel) / 3.0
+  def get_pid_accel_limits(current_speed, cruise_speed):
+
+    v_current_kph = current_speed * CV.MS_TO_KPH
+
+    gas_max_bp = [0., 10., 20., 50., 70., 130.]
+    gas_max_v = [1.8, 1.15, 0.87, 0.63, 0.45, 0.33]
+
+    brake_max_bp = [0, 70., 130.]
+    brake_max_v = [-4., -3., -2.1]
+
+    return interp(v_current_kph, brake_max_bp, brake_max_v), interp(v_current_kph, gas_max_bp, gas_max_v)
 
   @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=[]):  # pylint: disable=dangerous-default-value
@@ -36,8 +46,8 @@ class CarInterface(CarInterfaceBase):
 
     # Most Hyundai car ports are community features for now
     ret.communityFeature = True
-    
-    tire_stiffness_factor = 1.0
+
+    tire_stiffness_factor = 1.
 
     eps_modified = False
     for fw in car_fw:
@@ -109,33 +119,18 @@ class CarInterface(CarInterfaceBase):
     #longitudinal 
     
     ret.longitudinalTuning.kpBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kpV = [1.2, 0.97, 0.82, 0.735, 0.63, 0.54, 0.46]
+    ret.longitudinalTuning.kpV = [1.3, 0.98, 0.83, 0.75, 0.655, 0.57, 0.48]
     ret.longitudinalTuning.kiBP = [0., 130. * CV.KPH_TO_MS]
-    ret.longitudinalTuning.kiV = [0.04, 0.02]
-    #ret.longitudinalTuning.kdBP = [0., 130. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kdV = [0.45, 0.14]
-    ret.longitudinalTuning.kfBP = [0.]
-    ret.longitudinalTuning.kfV = [1.0]
+    ret.longitudinalTuning.kiV = [0.05, 0.03]
     ret.longitudinalTuning.deadzoneBP = [0., 100.*CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
 
-    ret.gasMaxBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 50.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.gasMaxV = [0.6, 0.4, 0.32, 0.24, 0.17, 0.13]
-
-
-    ret.brakeMaxBP = [0, 70.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.brakeMaxV = [1.5, 1.0, 0.7]
-    
-    ret.stoppingBrakeRate = 0.15  # brake_travel/s while trying to stop
-    ret.startingBrakeRate = 1.0  # brake_travel/s while releasing on restart
-    ret.startAccel = 1.5
-    
-    ret.steerMaxBP = [0.]
-    ret.steerMaxV = [1.5]
+    ret.stoppingDecelRate = 0.6  # m/s^2/s while trying to stop
+    ret.startingAccelRate = 3.2  # m/s^2/s while trying to start
 
     # genesis
     if candidate == CAR.GENESIS:
-      ret.mass = 2060. + STD_CARGO_KG
+      ret.mass = 1900. + STD_CARGO_KG
       ret.wheelbase = 3.01
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate == CAR.GENESIS_G70:
