@@ -132,13 +132,13 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
     if (ConfirmationDialog::confirm("캘리브레이션 및 파라미터를 초기화 할까요?", this)) {
       Params().remove("CalibrationParams");
       Params().remove("LiveParameters");
+      emit closeSettings();
       QTimer::singleShot(1000, []() {
-        Hardware::reboot();
+        Params().putBool("SoftRestartTriggered", true);
       });
     }
   });
 
-  main_layout->addWidget(horizontal_line());
   main_layout->addLayout(reset_layout);
   
   // Openpilot View
@@ -516,6 +516,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   DevicePanel *device = new DevicePanel(this);
   QObject::connect(device, &DevicePanel::reviewTrainingGuide, this, &SettingsWindow::reviewTrainingGuide);
   QObject::connect(device, &DevicePanel::showDriverView, this, &SettingsWindow::showDriverView);
+  QObject::connect(device, &DevicePanel::closeSettings, this, &SettingsWindow::closeSettings);
 
   QList<QPair<QString, QWidget *>> panels = {
     {"장치", device},
