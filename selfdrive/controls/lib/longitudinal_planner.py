@@ -5,7 +5,6 @@ from common.numpy_fast import interp
 
 import cereal.messaging as messaging
 from cereal import log
-from common.filter_simple import FirstOrderFilter
 from common.realtime import DT_MDL
 from common.realtime import sec_since_boot
 from selfdrive.modeld.constants import T_IDXS
@@ -57,9 +56,10 @@ class Planner():
     self.fcw = False
     self.fcw_checker = FCWChecker()
 
-    self.v_desired = FirstOrderFilter(0.0, 1.95, DT_MDL)
+    self.v_desired = 0.0
     self.a_desired = 0.0
     self.longitudinalPlanSource = 'cruise'
+    self.alpha = np.exp(-DT_MDL/2.0)
     self.lead_0 = log.ModelDataV2.LeadDataV3.new_message()
     self.lead_1 = log.ModelDataV2.LeadDataV3.new_message()
 
@@ -92,12 +92,12 @@ class Planner():
 
     enabled = (long_control_state == LongCtrlState.pid) or (long_control_state == LongCtrlState.stopping)
     if not enabled or sm['carState'].gasPressed:
-      self.v_desired.x = v_ego
+      self.v_desired = v_ego
       self.a_desired = a_ego
 
     # Prevent divergence, smooth in current v_ego
-    self.v_desired.update(v_ego)
-    self.v_desired.x = max(0.0, self.v_desired.x)
+    self.v_desired = self.alpha * self.v_desired + (1 - self.alpha) * v_ego
+    self.v_desired = max(0.0, self.v_desired)
 
     accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego)]
     accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP)
@@ -137,7 +137,7 @@ class Planner():
     # Interpolate 0.05 seconds and save as starting point for next iteration
     a_prev = self.a_desired
     self.a_desired = float(interp(DT_MDL, T_IDXS[:CONTROL_N], self.a_desired_trajectory))
-    self.v_desired.x += DT_MDL * (self.a_desired + a_prev)/2.0
+    self.v_desired = self.v_desired + DT_MDL * (self.a_desired + a_prev)/2.0
 
   def publish(self, sm, pm):
     plan_send = messaging.new_message('longitudinalPlan')
