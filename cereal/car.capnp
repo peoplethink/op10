@@ -494,6 +494,8 @@ struct CarParams {
     kiV @3 :List(Float32);
     deadzoneBP @4 :List(Float32);
     deadzoneV @5 :List(Float32);
+    kdBP @6 :List(Float32) = [0.];
+    kdV @7 :List(Float32) = [0.];
   }
 
   struct LateralINDITuning {
