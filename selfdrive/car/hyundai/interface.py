@@ -26,7 +26,7 @@ class CarInterface(CarInterfaceBase):
     v_current_kph = current_speed * CV.MS_TO_KPH
 
     gas_max_bp = [0., 10., 20., 50., 70., 130.]
-    gas_max_v = [1.8, 1.15, 0.87, 0.63, 0.45, 0.33]
+    gas_max_v = [1.9, 1.25, 0.87, 0.63, 0.44, 0.33]
 
     brake_max_bp = [0, 70., 130.]
     brake_max_v = [-4., -3., -2.1]
@@ -74,8 +74,8 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kpV = [0.09, 0.12]
       ret.lateralTuning.pid.kiBP = [20., 31.]
       ret.lateralTuning.pid.kiV = [0.002, 0.02]
-      #ret.lateralTuning.pid.kdBP = [20., 31.]
-      #ret.lateralTuning.pid.kdV = [0.5, 0.5]
+      ret.lateralTuning.pid.kdBP = [20., 31.]
+      ret.lateralTuning.pid.kdV = [0.5, 0.5]
       
       ret.steerActuatorDelay = 0.1
       ret.steerRateCost = 0.4
