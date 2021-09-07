@@ -70,11 +70,11 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.pid.kdV = [1.0]
       
       ret.lateralTuning.pid.kf = 0.00003
-      ret.lateralTuning.pid.kpBP = [20., 31.]
-      ret.lateralTuning.pid.kpV = [0.09, 0.12]
-      ret.lateralTuning.pid.kiBP = [20., 31.]
+      ret.lateralTuning.pid.kpBP = [11., 25.]
+      ret.lateralTuning.pid.kpV = [0.10, 0.125]
+      ret.lateralTuning.pid.kiBP = [11., 25.]
       ret.lateralTuning.pid.kiV = [0.002, 0.02]
-      ret.lateralTuning.pid.kdBP = [20., 31.]
+      ret.lateralTuning.pid.kdBP = [11., 25.]
       ret.lateralTuning.pid.kdV = [0.5, 0.5]
       
       ret.steerActuatorDelay = 0.1
@@ -128,7 +128,7 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
 
     ret.stoppingDecelRate = 0.6  # m/s^2/s while trying to stop
-    ret.startingAccelRate = 3.2  # m/s^2/s while trying to start
+    ret.startingAccelRate = 3.5  #3.2  # m/s^2/s while trying to start
 
     # genesis
     if candidate == CAR.GENESIS:
