@@ -728,7 +728,7 @@ static void bb_ui_draw_basic_info(UIState *s)
     //int mdps_bus = scene->car_params.getMdpsBus();
     int scc_bus = scene->car_params.getSccBus();
 
-    snprintf(str, sizeof(str), "(%.2f)(%d)SCC(%.2f/%.2f/%.2f/%.2f)%s%s",
+    snprintf(str, sizeof(str), "(%.2f)(%d)ABCD(%.2f/%.2f/%.2f/%.2f)%s%s",
 
                         //live_params.getAngleOffsetDeg(),
                         //live_params.getAngleOffsetAverageDeg(),
