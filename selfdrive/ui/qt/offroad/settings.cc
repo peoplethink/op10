@@ -397,7 +397,7 @@ QWidget * community_panel() {
     });
 
   if(Hardware::EON())
-    toggles_list->addWidget(supported_cars);
+  toggles_list->addWidget(supported_cars);
   toggles_list->addWidget(horizontal_line());
   toggles_list->addWidget(new LateralControl());
   toggles_list->addWidget(horizontal_line());
@@ -492,25 +492,25 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   )");
 
   // close button
-  QPushButton *close_btn = new QPushButton("닫기");
+  QPushButton* close_btn = new QPushButton("← Back");
   close_btn->setStyleSheet(R"(
     QPushButton {
-      font-size: 60px;
-      padding-bottom: 20px;
+      font-size: 50px;
       font-weight: bold;
-      border 1px grey solid;
-      border-radius: 80px;
-      background-color: #0100ff;
-      font-weight: 400;
-    }
-    QPushButton:pressed {
-      background-color: #3B3B3B;
+      margin: 0px;
+      padding: 15px;
+      border-width: 0;
+      border-radius: 30px;
+      color: #dddddd;
+      background-color: #444444;
     }
   )");
-  close_btn->setFixedSize(200, 200);
-  sidebar_layout->addSpacing(45);
-  sidebar_layout->addWidget(close_btn, 0, Qt::AlignCenter);
+  close_btn->setFixedSize(300, 110);
+  sidebar_layout->addSpacing(10);
+  sidebar_layout->addWidget(close_btn, 0, Qt::AlignRight);
+  sidebar_layout->addSpacing(10);
   QObject::connect(close_btn, &QPushButton::clicked, this, &SettingsWindow::closeSettings);
+
 
   // setup panels
   DevicePanel *device = new DevicePanel(this);
