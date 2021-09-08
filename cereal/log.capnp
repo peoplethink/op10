@@ -582,9 +582,9 @@ struct ControlsState @0x97ff69c53601abf1 {
   sccCurvatureFactor @71 :Float32;
   longitudinalActuatorDelay @72 :Float32;
 
-  sccStockCamAct @74 :Float32;
-  sccStockCamStatus @75 :Float32;
-  lateralControlMethod  @76 :UInt8;
+  sccStockCamAct @73 :Float32;
+  sccStockCamStatus @74 :Float32;
+  lateralControlMethod  @75 :UInt8;
 
   enum OpenpilotState @0xdbe58b96d2d1ac61 {
     disabled @0;
