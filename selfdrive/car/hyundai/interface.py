@@ -26,7 +26,7 @@ class CarInterface(CarInterfaceBase):
     v_current_kph = current_speed * CV.MS_TO_KPH
 
     gas_max_bp = [0., 10., 20., 50., 70., 130.]
-    gas_max_v = [1.9, 1.35, 0.97, 0.63, 0.44, 0.33]
+    gas_max_v = [1.9, 1.35, 0.87, 0.63, 0.44, 0.33]
 
     brake_max_bp = [0, 70., 130.]
     brake_max_v = [-4., -3., -2.1]
@@ -61,21 +61,21 @@ class CarInterface(CarInterfaceBase):
     lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
     if lat_control_method == 0:
       ret.lateralTuning.init('pid')
-      #ret.lateralTuning.pid.kf = 0.000027
-      #ret.lateralTuning.pid.kpBP = [0.]
-      #ret.lateralTuning.pid.kpV = [0.125]
-      #ret.lateralTuning.pid.kiBP = [0.]
-      #ret.lateralTuning.pid.kiV = [0.01]
-      #ret.lateralTuning.pid.kdBP = [0.]
-      #ret.lateralTuning.pid.kdV = [1.0]
+      ret.lateralTuning.pid.kf = 0.00005
+      ret.lateralTuning.pid.kpBP = [0.]
+      ret.lateralTuning.pid.kpV = [0.125]
+      ret.lateralTuning.pid.kiBP = [0.]
+      ret.lateralTuning.pid.kiV = [0.02]
+      ret.lateralTuning.pid.kdBP = [0.]
+      ret.lateralTuning.pid.kdV = [1.0]
       
-      ret.lateralTuning.pid.kf = 0.00004
-      ret.lateralTuning.pid.kpBP = [11., 25.]
-      ret.lateralTuning.pid.kpV = [0.06, 0.12]
-      ret.lateralTuning.pid.kiBP = [11., 25.]
-      ret.lateralTuning.pid.kiV = [0.001, 0.01]
-      ret.lateralTuning.pid.kdBP = [11., 25.]
-      ret.lateralTuning.pid.kdV = [0.0, 0.5]
+      #ret.lateralTuning.pid.kf = 0.00004
+      #ret.lateralTuning.pid.kpBP = [11., 25.]
+      #ret.lateralTuning.pid.kpV = [0.06, 0.12]
+      #ret.lateralTuning.pid.kiBP = [11., 25.]
+      #ret.lateralTuning.pid.kiV = [0.001, 0.01]
+      #ret.lateralTuning.pid.kdBP = [11., 25.]
+      #ret.lateralTuning.pid.kdV = [0.0, 0.5]
       ret.steerActuatorDelay = 0.1
       ret.steerRateCost = 0.4
       ret.steerLimitTimer = 2.0
