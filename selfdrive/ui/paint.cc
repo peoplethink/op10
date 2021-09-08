@@ -740,7 +740,7 @@ static void bb_ui_draw_basic_info(UIState *s)
                         controls_state.getSccGasFactor(),
                         controls_state.getSccBrakeFactor(),
                         controls_state.getSccCurvatureFactor(),
-						controls_state.getLongitudinalActuatorDelay(),
+			controls_state.getLongitudinalActuatorDelay(),
                         sccLogMessage.size() > 0 ? ", " : "",
                         sccLogMessage.c_str()
                         );
