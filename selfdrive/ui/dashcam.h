@@ -265,7 +265,7 @@ void draw_lock_button(UIState *s) {
 static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
   // Set button to bottom left of screen
   if (s->vipc_client->connected || s->scene.is_OpenpilotViewEnabled) {
-
+  //if (s->scene.is_OpenpilotViewEnabled) {
 
     //if (captureState == CAPTURE_STATE_CAPTURING) {
     //  draw_lock_button(s);
