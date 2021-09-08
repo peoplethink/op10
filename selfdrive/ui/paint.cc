@@ -1091,7 +1091,7 @@ static void ui_draw_vision_face(UIState *s) {
 }
 
 static void draw_laneless_button(UIState *s) {
-  //if (s->vipc_client->connected) {
+  if (s->vipc_client->connected) {
     int btn_w = 153;
     int btn_h = 153;
     int btn_x1 = s->fb_w - btn_w - 195 -20 - 20;
