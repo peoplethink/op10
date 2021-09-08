@@ -60,7 +60,7 @@ class CarInterface(CarInterfaceBase):
     params = Params()
     lat_control_method = int(params.get("LateralControlMethod", encoding="utf8"))
     if lat_control_method == 0:
-      #ret.lateralTuning.init('pid')
+      ret.lateralTuning.init('pid')
       #ret.lateralTuning.pid.kf = 0.00005
       #ret.lateralTuning.pid.kpBP = [0.]
       #ret.lateralTuning.pid.kpV = [0.12]
