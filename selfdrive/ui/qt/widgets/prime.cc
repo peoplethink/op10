@@ -185,7 +185,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   finishRegistationLayout->addSpacing(30);
 
-  QLabel* registrationDescription = new QLabel("1.Dynamic Lane Profile\n (토글>Kale모드 활성화)\n2.Lateral Control Select\n (PID)");
+  QLabel* registrationDescription = new QLabel("1.Dynamic Lane Profile\n (토글>Kale모드 활성화)\n2.Lateral Control Select\n (PID;D gain추가)");
   registrationDescription->setWordWrap(true);
   registrationDescription->setStyleSheet("font-size: 40px; font-weight: light; margin-left: 40px;");
   finishRegistationLayout->addWidget(registrationDescription);
